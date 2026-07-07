@@ -1,0 +1,89 @@
+﻿using System;
+using System.Windows.Forms;
+
+namespace ClinicaWinForms
+{
+    public partial class Form1 : Form
+    {
+        // Keep references to the tab pages to avoid possible null dereferences
+        private TabPage dashboardPage;
+        private TabPage agendaPage;
+        private TabPage pacientesPage;
+        private TabPage reportesPage;
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            // El TabControl ocupa toda la pantalla
+            tabControl1.Dock = DockStyle.Fill;
+
+            // Crear solapas (capturar las referencias devueltas por Add)
+            dashboardPage = tabControl1.TabPages.Add("Dashboard");
+            agendaPage = tabControl1.TabPages.Add("Agenda");
+            pacientesPage = tabControl1.TabPages.Add("Pacientes");
+            reportesPage = tabControl1.TabPages.Add("Reportes");
+
+            // Cargar contenido inicial
+            CargarDashboard();
+            CargarAgenda();
+            CargarPacientes();
+            CargarReportes();
+        }
+
+        private void CargarDashboard()
+        {
+            Label titulo = new Label();
+            titulo.Text = "Dashboard: Mi Día";
+            titulo.Font = new System.Drawing.Font("Segoe UI", 14, System.Drawing.FontStyle.Bold);
+            titulo.Dock = DockStyle.Top;
+
+            FlowLayoutPanel panel = new FlowLayoutPanel();
+            panel.Dock = DockStyle.Bottom;
+            panel.Height = 100;
+
+            panel.Controls.Add(new Label() { Text = "Pacientes Atendidos Hoy: 5/8" });
+            panel.Controls.Add(new Label() { Text = "Próximo Turno: 10:30 AM" });
+            Button btnNuevo = new Button() { Text = "Nuevo Turno" };
+            panel.Controls.Add(btnNuevo);
+
+            dashboardPage.Controls.Add(titulo);
+            dashboardPage.Controls.Add(panel);
+        }
+
+        private void CargarAgenda()
+        {
+            MonthCalendar calendario = new MonthCalendar();
+            calendario.Dock = DockStyle.Fill;
+            agendaPage.Controls.Add(calendario);
+        }
+
+        private void CargarPacientes()
+        {
+            DataGridView grid = new DataGridView();
+            grid.Dock = DockStyle.Fill;
+            grid.Columns.Add("Nombre", "Nombre");
+            grid.Columns.Add("Tratamiento", "Tratamiento");
+            grid.Rows.Add("María Gómez", "Rehabilitación Lumbar");
+            grid.Rows.Add("Juan Pérez", "Kinesiología Deportiva");
+
+            pacientesPage.Controls.Add(grid);
+        }
+
+        private void CargarReportes()
+        {
+            TextBox txt = new TextBox();
+            txt.Multiline = true;
+            txt.Dock = DockStyle.Fill;
+            txt.Text = "Aquí irán los reportes generados...";
+            reportesPage.Controls.Add(txt);
+        }
+
+        // Added missing Load event handler referenced in the designer
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // El constructor ya configura la interfaz; deje vacío o agregue lógica de carga adicional aquí.
+        }
+    }
+}
+
