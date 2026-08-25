@@ -188,9 +188,10 @@ namespace TESTSOLAPAS
             colEvolucion.ReadOnly   = true;
 
             // ── panelEvolucion ─────────────────────────────────────
-            panelEvolucion.Dock      = System.Windows.Forms.DockStyle.Fill;
-            panelEvolucion.Padding   = new System.Windows.Forms.Padding(12);
-            panelEvolucion.BackColor = System.Drawing.Color.FromArgb(248, 249, 252);
+            panelEvolucion.Dock        = System.Windows.Forms.DockStyle.Fill;
+            panelEvolucion.Padding     = new System.Windows.Forms.Padding(12);
+            panelEvolucion.BackColor   = System.Drawing.Color.FromArgb(248, 249, 252);
+            panelEvolucion.AutoScroll  = true;
             panelEvolucion.Controls.Add(lblTituloEvolucion);
             panelEvolucion.Controls.Add(lblEva);
             panelEvolucion.Controls.Add(numEva);
@@ -213,10 +214,10 @@ namespace TESTSOLAPAS
             lblEva.Text      = "Nivel de Dolor (EVA 0-10):";
             lblEva.Font      = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             lblEva.ForeColor = System.Drawing.Color.FromArgb(40, 40, 80);
-            lblEva.Location  = new System.Drawing.Point(12, 52);
+            lblEva.Location  = new System.Drawing.Point(12, 45);
             lblEva.AutoSize  = true;
 
-            numEva.Location  = new System.Drawing.Point(12, 74);
+            numEva.Location  = new System.Drawing.Point(12, 68);
             numEva.Minimum   = 0;
             numEva.Maximum   = 10;
             numEva.Value     = 0;
@@ -227,32 +228,32 @@ namespace TESTSOLAPAS
             lblEvaValor.Text      = "Sin dolor";
             lblEvaValor.Font      = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
             lblEvaValor.ForeColor = System.Drawing.Color.DimGray;
-            lblEvaValor.Location  = new System.Drawing.Point(82, 78);
+            lblEvaValor.Location  = new System.Drawing.Point(82, 72);
             lblEvaValor.AutoSize  = true;
 
             lblTecnicas.Text      = "Técnicas aplicadas:";
             lblTecnicas.Font      = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             lblTecnicas.ForeColor = System.Drawing.Color.FromArgb(40, 40, 80);
-            lblTecnicas.Location  = new System.Drawing.Point(12, 112);
+            lblTecnicas.Location  = new System.Drawing.Point(12, 102);
             lblTecnicas.AutoSize  = true;
 
-            int chkX = 12, chkY = 134;
-            ConfigurarCheckBox(chkMagnetoterapia, "Magnetoterapia",   chkX,      chkY);
-            ConfigurarCheckBox(chkUltrasonido,    "Ultrasonido",      chkX + 160,chkY);
-            ConfigurarCheckBox(chkTerapiaManual,  "Terapia Manual",   chkX,      chkY + 28);
-            ConfigurarCheckBox(chkEjercicio,      "Ejercicio Terapeutico", chkX + 160, chkY + 28);
+            int chkX = 12, chkY = 124;
+            ConfigurarCheckBox(chkMagnetoterapia, "Magnetoterapia",        chkX,       chkY);
+            ConfigurarCheckBox(chkUltrasonido,    "Ultrasonido",           chkX + 160, chkY);
+            ConfigurarCheckBox(chkTerapiaManual,  "Terapia Manual",        chkX,       chkY + 26);
+            ConfigurarCheckBox(chkEjercicio,      "Ejercicio Terapéutico", chkX + 160, chkY + 26);
 
             lblComentarios.Text      = "Evolución / Notas de la sesión:";
             lblComentarios.Font      = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             lblComentarios.ForeColor = System.Drawing.Color.FromArgb(40, 40, 80);
-            lblComentarios.Location  = new System.Drawing.Point(12, 200);
+            lblComentarios.Location  = new System.Drawing.Point(12, 185);
             lblComentarios.AutoSize  = true;
 
-            txtComentarios.Location    = new System.Drawing.Point(12, 224);
+            txtComentarios.Location    = new System.Drawing.Point(12, 208);
             txtComentarios.Multiline   = true;
             txtComentarios.ScrollBars  = System.Windows.Forms.ScrollBars.Vertical;
             txtComentarios.Font        = new System.Drawing.Font("Segoe UI", 10F);
-            txtComentarios.Size        = new System.Drawing.Size(380, 160);
+            txtComentarios.Size        = new System.Drawing.Size(380, 130);
             txtComentarios.Anchor      = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             txtComentarios.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 
@@ -262,9 +263,9 @@ namespace TESTSOLAPAS
             btnGuardar.ForeColor = System.Drawing.Color.White;
             btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnGuardar.FlatAppearance.BorderSize = 0;
-            btnGuardar.Size      = new System.Drawing.Size(200, 44);
-            btnGuardar.Location  = new System.Drawing.Point(12, 400);
-            btnGuardar.Anchor    = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            btnGuardar.Size      = new System.Drawing.Size(200, 42);
+            btnGuardar.Location  = new System.Drawing.Point(12, 350);
+            btnGuardar.Anchor    = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
             btnGuardar.Cursor    = System.Windows.Forms.Cursors.Hand;
             btnGuardar.Click    += btnGuardar_Click;
 

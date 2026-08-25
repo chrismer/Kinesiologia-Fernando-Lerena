@@ -33,7 +33,17 @@ namespace TESTSOLAPAS
 
             // Si el paciente llega nulo (ej. vista previa del diseñador) usamos uno de prueba
             _repository = repository ?? new MemoryEvolucionRepository();
-            _paciente   = paciente   ?? _repository.ObtenerPacienteDemo();
+            _paciente   = paciente   ?? (_repository as MemoryEvolucionRepository)?.ObtenerPacienteDemo() 
+                                     ?? new Paciente 
+                                     { 
+                                         Id = 1, 
+                                         NombreCompleto = "María Gómez Blanía", 
+                                         Dni = "12378738", 
+                                         Edad = 34, 
+                                         Cobertura = "OSDE 210", 
+                                         MotivoConsulta = "Dolor lumbar", 
+                                         DiagnosticoInicial = "Lumbalgia crónica" 
+                                     };
         }
 
         // ── Carga inicial ────────────────────────────────────────────

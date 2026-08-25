@@ -101,7 +101,11 @@ namespace TESTSOLAPAS
             _evoluciones.Add(evolucion);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Devuelve un paciente de prueba para desarrollo offline.
+        /// Este método ya no forma parte de IEvolucionRepository;
+        /// en producción los pacientes se obtienen de IPacienteRepository.
+        /// </summary>
         public Paciente ObtenerPacienteDemo()
         {
             return _pacienteDemo;
