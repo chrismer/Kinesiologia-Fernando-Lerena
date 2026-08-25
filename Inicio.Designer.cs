@@ -1,4 +1,4 @@
-﻿namespace TESTSOLAPAS
+namespace TESTSOLAPAS
 {
     partial class Inicio
     {
@@ -144,7 +144,7 @@
             btnConfig.Padding = new Padding(10, 0, 0, 0);
             btnConfig.Size = new Size(175, 40);
             btnConfig.TabIndex = 31;
-            btnConfig.Text = "⚙️ Configuración";
+            btnConfig.Text = "Configuración";
             btnConfig.UseVisualStyleBackColor = false;
             btnConfig.Click += btnConfig_Click;
             // 
@@ -170,7 +170,7 @@
             btnTurnos.Padding = new Padding(10, 0, 0, 0);
             btnTurnos.Size = new Size(175, 40);
             btnTurnos.TabIndex = 29;
-            btnTurnos.Text = "📁 Turnos";
+            btnTurnos.Text = "Turnos";
             btnTurnos.UseVisualStyleBackColor = false;
             // 
             // panel7
@@ -195,7 +195,7 @@
             btnAgenda.Padding = new Padding(10, 0, 0, 0);
             btnAgenda.Size = new Size(175, 40);
             btnAgenda.TabIndex = 27;
-            btnAgenda.Text = "📅 Agenda";
+            btnAgenda.Text = "Agenda";
             btnAgenda.UseVisualStyleBackColor = false;
             // 
             // panel5
@@ -220,8 +220,9 @@
             btnPacientes.Padding = new Padding(10, 0, 0, 0);
             btnPacientes.Size = new Size(175, 40);
             btnPacientes.TabIndex = 25;
-            btnPacientes.Text = "👤 Pacientes";
+            btnPacientes.Text = "Pacientes";
             btnPacientes.UseVisualStyleBackColor = false;
+            btnPacientes.Click += btnPacientes_Click;
             // 
             // panel4
             // 
@@ -245,7 +246,7 @@
             btnDashboard.Padding = new Padding(10, 0, 0, 0);
             btnDashboard.Size = new Size(175, 40);
             btnDashboard.TabIndex = 23;
-            btnDashboard.Text = "📊 Dashboard";
+            btnDashboard.Text = "Dashboard";
             btnDashboard.UseVisualStyleBackColor = false;
             btnDashboard.Click += btnDashboard_Click;
             // 
