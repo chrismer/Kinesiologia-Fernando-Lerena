@@ -2,10 +2,7 @@ namespace TESTSOLAPAS
 {
     public partial class Pagina5 : Form
     {
-        public Pagina5()
-        {
-            InitializeComponent();
-        }
+        public Pagina5() => InitializeComponent();
 
         private void Form1_Load(object sender, EventArgs e)
         {
