@@ -8,7 +8,6 @@ namespace TESTSOLAPAS.Pantalla_5
 {
     public class Paciente
     {
-        // Identificador único
         public int Id { get; set; }
 
         // Datos personales
