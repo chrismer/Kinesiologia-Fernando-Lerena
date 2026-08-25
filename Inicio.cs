@@ -7,16 +7,29 @@ namespace TESTSOLAPAS
     public partial class Inicio : Form
     {
         /// <summary>
-        /// Instancia única del repositorio de evoluciones que vive durante toda la sesión.
-        /// Se inyecta en Pagina3 cada vez que se abre para que los datos no se pierdan
-        /// al navegar entre pantallas. Cuando se integre la base de datos, solo se cambia
-        /// esta línea por la implementación concreta de IEvolucionRepository.
+        /// Repositorios que viven durante toda la sesión de la aplicación.
+        /// Si hay appsettings.json configurado → usa PostgreSQL (Neon).
+        /// Si no → usa los repositorios en memoria (desarrollo offline).
         /// </summary>
-        private readonly IEvolucionRepository _evolucionRepository = new MemoryEvolucionRepository();
+        private readonly IEvolucionRepository _evolucionRepository;
+        private readonly IPacienteRepository _pacienteRepository;
 
         public Inicio()
         {
             InitializeComponent();
+
+            if (DbConnectionFactory.IsConfigured)
+            {
+                _evolucionRepository = new NpgsqlEvolucionRepository();
+                _pacienteRepository  = new NpgsqlPacienteRepository();
+            }
+            else
+            {
+                var memRepo = new MemoryEvolucionRepository();
+                _evolucionRepository = memRepo;
+                // Fallback: crear un wrapper simple para IPacienteRepository en memoria
+                _pacienteRepository  = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
+            }
         }
 
         private void panelMain_Paint(object sender, PaintEventArgs e)
@@ -82,7 +95,13 @@ namespace TESTSOLAPAS
         private void btnPacientes_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnPacientes);
-            var paciente = _evolucionRepository.ObtenerPacienteDemo();
+
+            // Obtener el primer paciente disponible (demo o de la DB)
+            var pacientes = _pacienteRepository.ObtenerTodos();
+            var paciente = pacientes.Count > 0
+                ? pacientes[0]
+                : new Paciente { Id = 0, NombreCompleto = "Sin pacientes", Dni = "—" };
+
             AbrirFormularioEnPanel(new Pagina3(paciente, _evolucionRepository));
         }
 
@@ -101,5 +120,23 @@ namespace TESTSOLAPAS
         private void label1_Click(object sender, EventArgs e)
         {
         }
+    }
+
+    /// <summary>
+    /// Implementación mínima de IPacienteRepository para desarrollo offline.
+    /// Solo devuelve el paciente demo de MemoryEvolucionRepository.
+    /// </summary>
+    internal class MemoryPacienteRepository : IPacienteRepository
+    {
+        private readonly Paciente _pacienteDemo;
+
+        public MemoryPacienteRepository(Paciente pacienteDemo)
+        {
+            _pacienteDemo = pacienteDemo;
+        }
+
+        public List<Paciente> ObtenerTodos() => new List<Paciente> { _pacienteDemo };
+        public Paciente? ObtenerPorId(int pacienteId) => _pacienteDemo;
+        public void Guardar(Paciente paciente) { /* no-op en memoria */ }
     }
 }
