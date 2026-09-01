@@ -22,14 +22,14 @@ namespace TESTSOLAPAS
             if (DbConnectionFactory.IsConfigured)
             {
                 _evolucionRepository = new NpgsqlEvolucionRepository();
-                _pacienteRepository  = new NpgsqlPacienteRepository();
+                _pacienteRepository = new NpgsqlPacienteRepository();
             }
             else
             {
                 var memRepo = new MemoryEvolucionRepository();
                 _evolucionRepository = memRepo;
                 // Fallback: crear un wrapper simple para IPacienteRepository en memoria
-                _pacienteRepository  = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
+                _pacienteRepository = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
             }
         }
 
@@ -63,7 +63,7 @@ namespace TESTSOLAPAS
             {
                 btn.BackColor = SystemColors.ControlLight;
                 btn.ForeColor = Color.FromArgb(0, 0, 64);
-                btn.Font      = new Font("Segoe UI", 10, FontStyle.Bold);
+                btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             }
         }
 
@@ -81,7 +81,7 @@ namespace TESTSOLAPAS
             // Recorte circular para la foto de perfil
             var path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddEllipse(0, 0, pictureBox2.Width, pictureBox2.Height);
-            pictureBox2.Region   = new Region(path);
+            pictureBox2.Region = new Region(path);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
@@ -127,6 +127,12 @@ namespace TESTSOLAPAS
 
         private void label1_Click(object sender, EventArgs e)
         {
+        }
+
+        private void btnTurnos_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnTurnos);
+            AbrirFormularioEnPanel(new BuscadorPacientesForm());
         }
     }
 
