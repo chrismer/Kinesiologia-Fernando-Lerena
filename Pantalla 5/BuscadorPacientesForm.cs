@@ -27,5 +27,30 @@ namespace TESTSOLAPAS.Pantalla_5
                 dtvBusquedaDePacientes.DataSource = resultados;
             }
         }
+
+        private void dtvBusquedaDePacientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtBoxcuadroBusquedaPacientes_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BuscadorPacientesForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
