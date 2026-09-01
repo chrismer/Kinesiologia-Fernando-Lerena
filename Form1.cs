@@ -14,7 +14,7 @@ namespace TESTSOLAPAS
     {
         public Form1()
         {
-            InitializeComponent();
+            //InitializeComponent();
         }
     }
 }
