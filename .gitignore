@@ -9,3 +9,6 @@ obj/
 
 # Archivos de macOS
 .DS_Store
+
+# Credenciales y configuración local
+appsettings.json

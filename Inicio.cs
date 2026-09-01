@@ -1,126 +1,153 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TESTSOLAPAS
 {
     public partial class Inicio : Form
     {
+        /// <summary>
+        /// Repositorios que viven durante toda la sesión de la aplicación.
+        /// Si hay appsettings.json configurado → usa PostgreSQL (Neon).
+        /// Si no → usa los repositorios en memoria (desarrollo offline).
+        /// </summary>
+        private readonly IEvolucionRepository _evolucionRepository;
+        private readonly IPacienteRepository _pacienteRepository;
+
         public Inicio()
         {
             InitializeComponent();
+
+            if (DbConnectionFactory.IsConfigured)
+            {
+                _evolucionRepository = new NpgsqlEvolucionRepository();
+                _pacienteRepository  = new NpgsqlPacienteRepository();
+            }
+            else
+            {
+                var memRepo = new MemoryEvolucionRepository();
+                _evolucionRepository = memRepo;
+                // Fallback: crear un wrapper simple para IPacienteRepository en memoria
+                _pacienteRepository  = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
+            }
         }
 
         private void panelMain_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
+        // ── Helper de Navegación ─────────────────────────────────────
 
-
-
-        private void button5_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Incrusta cualquier formulario secundario dentro de panelMain.
+        /// Centraliza la lógica que antes estaba duplicada en button5_Click y btnConfig_Click.
+        /// </summary>
+        private void AbrirFormularioEnPanel(Form formulario)
         {
-
-
-            // Crear instancia del formulario que querés mostrar
-            Pagina5 pagina5 = new Pagina5();
-
-            // Configurarlo para que se incruste en el panel
-            pagina5.TopLevel = false;
-            pagina5.FormBorderStyle = FormBorderStyle.None;
-            pagina5.Dock = DockStyle.Fill;
-
-            // Limpiar el panel y agregar el formulario
             panelMain.Controls.Clear();
-            panelMain.Controls.Add(pagina5);
-
-            // Mostrarlo
-            pagina5.Show();
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+            panelMain.Controls.Add(formulario);
+            formulario.Show();
         }
+
+        // ── Estilo de botones del menú lateral ───────────────────────
+
         private void ResetearBotones()
         {
-            btnDashboard.BackColor = Color.LightGray;
-            btnPacientes.BackColor = Color.LightGray;
-            btnTurnos.BackColor = Color.LightGray;
-            btnAgenda.BackColor = Color.LightGray;
+            Button[] botones = { btnDashboard, btnPacientes, btnTurnos, btnAgenda, btnConfig };
 
-            btnDashboard.ForeColor = Color.Black;
-            btnPacientes.ForeColor = Color.Black;
-            btnTurnos.ForeColor = Color.Black;
-            btnAgenda.ForeColor = Color.Black;
-
-            btnDashboard.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            btnPacientes.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            btnTurnos.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            btnAgenda.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            foreach (var btn in botones)
+            {
+                btn.BackColor = SystemColors.ControlLight;
+                btn.ForeColor = Color.FromArgb(0, 0, 64);
+                btn.Font      = new Font("Segoe UI", 10, FontStyle.Bold);
+            }
         }
 
+        private void MarcarBotonActivo(Button boton)
+        {
+            ResetearBotones();
+            boton.BackColor = Color.FromArgb(0, 122, 204);
+            boton.ForeColor = Color.White;
+        }
+
+        // ── Eventos de carga ─────────────────────────────────────────
 
         private void Inicio_Load(object sender, EventArgs e)
         {
-
-            // Crear una región circular del mismo tamaño que el PictureBox
-            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            // Recorte circular para la foto de perfil
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddEllipse(0, 0, pictureBox2.Width, pictureBox2.Height);
-
-            pictureBox2.Region = new Region(path);
-
-            // Opcional: ajustar el SizeMode para que la imagen se vea bien
+            pictureBox2.Region   = new Region(path);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-
         }
+
+        // ── Eventos de clic de botones del menú ──────────────────────
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnDashboard);
+            // TODO: AbrirFormularioEnPanel(new Dashboard());
+        }
+
+        private void btnPacientes_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnPacientes);
+
+            // Obtener el primer paciente disponible (demo o de la DB)
+            var pacientes = _pacienteRepository.ObtenerTodos();
+            var paciente = pacientes.Count > 0
+                ? pacientes[0]
+                : new Paciente { Id = 0, NombreCompleto = "Sin pacientes", Dni = "—" };
+
+            AbrirFormularioEnPanel(new Pagina3(paciente, _evolucionRepository));
+        }
+
+        private void btnTurnos_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnTurnos);
+            AbrirFormularioEnPanel(new TESTSOLAPAS.Pantalla_5.BuscadorPacientesForm());
+        }
+
+        private void btnAgenda_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnAgenda);
+        }
+
+        private void btnConfig_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnConfig);
+            AbrirFormularioEnPanel(new Pagina5());
+        }
+
+        // ── Eventos de controles de cabecera ─────────────────────────
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void btnConfig_Click(object sender, EventArgs e)
-
-        {
-            // Mostrar la página 5 en el panel principal
-            panelMain.Controls.Clear();
-            Pagina5 pagina = new Pagina5();
-            pagina.TopLevel = false;
-            pagina.FormBorderStyle = FormBorderStyle.None;
-            pagina.Dock = DockStyle.Fill;
-            panelMain.Controls.Add(pagina);
-            pagina.Show();
-
-            // Cambiar estilo del botón activo
-            btnConfig.BackColor = Color.FromArgb(0, 122, 204); // azul activo
-            btnConfig.ForeColor = Color.White;
-            btnConfig.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-            // Resetear los demás botones
-            ResetearBotones();
-
-
-
-        }
-
-        private void btnDashboard_Click(object sender, EventArgs e)
-        {
-            // Cambiar estilo del botón activo
-            btnDashboard.BackColor = Color.FromArgb(0, 122, 204); // azul activo
-            btnDashboard.ForeColor = Color.White;
-            btnDashboard.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-
         }
     }
 
+    /// <summary>
+    /// Implementación mínima de IPacienteRepository para desarrollo offline.
+    /// Solo devuelve el paciente demo de MemoryEvolucionRepository.
+    /// </summary>
+    internal class MemoryPacienteRepository : IPacienteRepository
+    {
+        private readonly Paciente _pacienteDemo;
+
+        public MemoryPacienteRepository(Paciente pacienteDemo)
+        {
+            _pacienteDemo = pacienteDemo;
+        }
+
+        public List<Paciente> ObtenerTodos() => new List<Paciente> { _pacienteDemo };
+        public Paciente? ObtenerPorId(int pacienteId) => _pacienteDemo;
+        public void Guardar(Paciente paciente) { /* no-op en memoria */ }
+    }
 }
