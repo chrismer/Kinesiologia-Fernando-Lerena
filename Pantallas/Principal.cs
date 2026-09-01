@@ -14,6 +14,7 @@ namespace TESTSOLAPAS
         /// </summary>
         private readonly IEvolucionRepository _evolucionRepository;
         private readonly IPacienteRepository _pacienteRepository;
+        private readonly ITurnoRepository _turnoRepository;
 
         public Principal()
         {
@@ -22,14 +23,15 @@ namespace TESTSOLAPAS
             if (DbConnectionFactory.IsConfigured)
             {
                 _evolucionRepository = new NpgsqlEvolucionRepository();
-                _pacienteRepository = new NpgsqlPacienteRepository();
+                _pacienteRepository  = new NpgsqlPacienteRepository();
+                _turnoRepository     = new NpgsqlTurnoRepository();
             }
             else
             {
                 var memRepo = new MemoryEvolucionRepository();
                 _evolucionRepository = memRepo;
-                // Fallback: crear un wrapper simple para IPacienteRepository en memoria
-                _pacienteRepository = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
+                _pacienteRepository  = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
+                _turnoRepository     = new MemoryTurnoRepository();
             }
         }
 
@@ -41,7 +43,6 @@ namespace TESTSOLAPAS
 
         /// <summary>
         /// Incrusta cualquier formulario secundario dentro de panelMain.
-        /// Centraliza la lógica que antes estaba duplicada en button5_Click y btnConfig_Click.
         /// </summary>
         private void AbrirFormularioEnPanel(Form formulario)
         {
@@ -83,6 +84,9 @@ namespace TESTSOLAPAS
             path.AddEllipse(0, 0, pictureBox2.Width, pictureBox2.Height);
             pictureBox2.Region = new Region(path);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            // Abrir el Dashboard por defecto al iniciar
+            btnDashboard_Click(this, EventArgs.Empty);
         }
 
         // ── Eventos de clic de botones del menú ──────────────────────
@@ -90,8 +94,7 @@ namespace TESTSOLAPAS
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnDashboard);
-            // TODO: AbrirFormularioEnPanel(new Dashboard());
-            AbrirFormularioEnPanel(new DashBoard());
+            AbrirFormularioEnPanel(new DashBoard(_turnoRepository, _pacienteRepository, _evolucionRepository, AbrirFormularioEnPanel));
         }
 
         private void btnPacientes_Click(object sender, EventArgs e)
@@ -107,32 +110,22 @@ namespace TESTSOLAPAS
             AbrirFormularioEnPanel(new PacienteForm(paciente, _evolucionRepository));
         }
 
+        private void btnTurnos_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnTurnos);
+            AbrirFormularioEnPanel(new TurnosForm(_turnoRepository, _pacienteRepository, _evolucionRepository, AbrirFormularioEnPanel));
+        }
+
         private void btnAgenda_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnAgenda);
-            AbrirFormularioEnPanel(new AgendaForm());
+            AbrirFormularioEnPanel(new AgendaForm(_turnoRepository));
         }
 
         private void btnConfig_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnConfig);
             AbrirFormularioEnPanel(new ConfiguracionForm());
-        }
-
-        // ── Eventos de controles de cabecera ─────────────────────────
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void btnTurnos_Click(object sender, EventArgs e)
-        {
-            MarcarBotonActivo(btnTurnos);
-            AbrirFormularioEnPanel(new BuscadorPacientesForm());
         }
     }
 

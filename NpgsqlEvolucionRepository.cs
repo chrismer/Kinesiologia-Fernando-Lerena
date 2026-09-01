@@ -17,6 +17,7 @@ namespace TESTSOLAPAS
             return conn.Query<EvolucionSesion>(
                 @"SELECT e.pk_evolucion AS Id,
                          e.fk_paciente AS PacienteId,
+                         e.fk_turno AS TurnoId,
                          e.fecha AS Fecha,
                          p.nombre AS Profesional,
                          e.niveldoloreva AS NivelDolorEva,
@@ -46,13 +47,14 @@ namespace TESTSOLAPAS
             );
 
             conn.Execute(
-                @"INSERT INTO evolucion (fk_paciente, fecha, fk_profesional, niveldoloreva,
+                @"INSERT INTO evolucion (fk_paciente, fk_turno, fecha, fk_profesional, niveldoloreva,
                                          tecnicasaplicadas, comentariosevolucion)
-                  VALUES (@PacienteId, @Fecha, @ProfesionalId, @NivelDolorEva,
+                  VALUES (@PacienteId, @TurnoId, @Fecha, @ProfesionalId, @NivelDolorEva,
                           @TecnicasAplicadas, @ComentariosEvolucion)",
                 new
                 {
                     evolucion.PacienteId,
+                    evolucion.TurnoId,
                     Fecha = evolucion.Fecha == default ? DateTime.Now : evolucion.Fecha,
                     ProfesionalId = profesionalId ?? 1,
                     evolucion.NivelDolorEva,

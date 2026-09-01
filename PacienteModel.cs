@@ -24,6 +24,7 @@ namespace TESTSOLAPAS
     {
         public int Id { get; set; }
         public int PacienteId { get; set; }
+        public int? TurnoId { get; set; }
         public DateTime Fecha { get; set; }
         public string Profesional { get; set; } = string.Empty;
 

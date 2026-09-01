@@ -19,17 +19,17 @@ namespace TESTSOLAPAS
     {
         private readonly Paciente _paciente;
         private readonly IEvolucionRepository _repository;
+        private readonly int? _turnoId;
 
         // ── Constructor ──────────────────────────────────────────────
 
         /// <summary>
-        /// Crea la pantalla con el paciente y repositorio inyectados desde Inicio.cs.
-        /// El repositorio se mantiene vivo en Inicio (campo de clase) para que los datos
-        /// persistan al navegar entre pantallas.
+        /// Crea la pantalla con el paciente, repositorio y opcionalmente el ID del turno en atención.
         /// </summary>
-        public PacienteForm(Paciente paciente, IEvolucionRepository repository)
+        public PacienteForm(Paciente paciente, IEvolucionRepository repository, int? turnoId = null)
         {
             InitializeComponent();
+            _turnoId = turnoId;
 
             // Si el paciente llega nulo (ej. vista previa del diseñador) usamos uno de prueba
             _repository = repository ?? new MemoryEvolucionRepository();
@@ -147,6 +147,7 @@ namespace TESTSOLAPAS
             var nuevaEvolucion = new EvolucionSesion
             {
                 PacienteId           = _paciente.Id,
+                TurnoId              = _turnoId,
                 Fecha                = DateTime.Now,
                 Profesional          = "Dr. Juan Pérez",   // TODO: reemplazar con el usuario logueado
                 NivelDolorEva        = (int)numEva.Value,

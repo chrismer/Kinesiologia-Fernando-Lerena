@@ -1,6 +1,7 @@
 -- ============================================================
--- Kinesiología - Datos iniciales de prueba
--- Ejecutar después de 001_create_tables.sql
+-- Kinesiología - Datos iniciales de prueba (LEGACY)
+-- AVISO: Este script ha sido SUPERADO por sql/003_seed_turnos.sql.
+-- Usar siempre sql/003_seed_turnos.sql para poblar la base de datos.
 -- ============================================================
 
 -- Profesional
