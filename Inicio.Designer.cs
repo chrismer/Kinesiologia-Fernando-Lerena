@@ -198,6 +198,7 @@ namespace TESTSOLAPAS
             btnAgenda.TabIndex = 27;
             btnAgenda.Text = "Agenda";
             btnAgenda.UseVisualStyleBackColor = false;
+            btnAgenda.Click += btnAgenda_Click;
             // 
             // panel5
             // 
