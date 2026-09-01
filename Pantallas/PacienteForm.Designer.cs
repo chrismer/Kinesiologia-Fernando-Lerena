@@ -1,6 +1,6 @@
 namespace TESTSOLAPAS
 {
-    partial class Pagina3
+    partial class PacienteForm
     {
         private System.ComponentModel.IContainer components = null;
 

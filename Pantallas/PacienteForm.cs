@@ -15,7 +15,7 @@ namespace TESTSOLAPAS
     ///   var p = new Pagina3(_evolucionRepository.ObtenerPacienteDemo(), _evolucionRepository);
     ///   AbrirFormularioEnPanel(p);
     /// </summary>
-    public partial class Pagina3 : Form
+    public partial class PacienteForm : Form
     {
         private readonly Paciente _paciente;
         private readonly IEvolucionRepository _repository;
@@ -27,7 +27,7 @@ namespace TESTSOLAPAS
         /// El repositorio se mantiene vivo en Inicio (campo de clase) para que los datos
         /// persistan al navegar entre pantallas.
         /// </summary>
-        public Pagina3(Paciente paciente, IEvolucionRepository repository)
+        public PacienteForm(Paciente paciente, IEvolucionRepository repository)
         {
             InitializeComponent();
 

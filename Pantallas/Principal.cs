@@ -5,7 +5,7 @@ using TESTSOLAPAS.Pantalla_5;
 
 namespace TESTSOLAPAS
 {
-    public partial class Inicio : Form
+    public partial class Principal : Form
     {
         /// <summary>
         /// Repositorios que viven durante toda la sesión de la aplicación.
@@ -15,7 +15,7 @@ namespace TESTSOLAPAS
         private readonly IEvolucionRepository _evolucionRepository;
         private readonly IPacienteRepository _pacienteRepository;
 
-        public Inicio()
+        public Principal()
         {
             InitializeComponent();
 
@@ -104,19 +104,19 @@ namespace TESTSOLAPAS
                 ? pacientes[0]
                 : new Paciente { Id = 0, NombreCompleto = "Sin pacientes", Dni = "—" };
 
-            AbrirFormularioEnPanel(new Pagina3(paciente, _evolucionRepository));
+            AbrirFormularioEnPanel(new PacienteForm(paciente, _evolucionRepository));
         }
 
         private void btnAgenda_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnAgenda);
-            AbrirFormularioEnPanel(new Pagina2());
+            AbrirFormularioEnPanel(new AgendaForm());
         }
 
         private void btnConfig_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnConfig);
-            AbrirFormularioEnPanel(new Pagina5());
+            AbrirFormularioEnPanel(new ConfiguracionForm());
         }
 
         // ── Eventos de controles de cabecera ─────────────────────────

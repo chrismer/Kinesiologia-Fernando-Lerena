@@ -1,6 +1,6 @@
 namespace TESTSOLAPAS
 {
-    partial class Pagina2
+    partial class AgendaForm
     {
         private System.ComponentModel.IContainer components = null;
         private Panel panelTitulo = null!;
@@ -368,7 +368,7 @@ namespace TESTSOLAPAS
             lblResumen.TabIndex = 1;
             lblResumen.Text = "Turnos programados";
             // 
-            // Pagina2
+            // AgendaForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -379,7 +379,7 @@ namespace TESTSOLAPAS
             Controls.Add(grpFiltros);
             Controls.Add(panelTitulo);
             Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Name = "Pagina2";
+            Name = "AgendaForm";
             Padding = new Padding(14);
             Text = "Agenda Completa";
             Load += Pagina2_Load;

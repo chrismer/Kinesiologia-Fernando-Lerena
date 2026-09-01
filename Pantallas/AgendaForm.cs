@@ -5,11 +5,11 @@ using System.Windows.Forms;
 namespace TESTSOLAPAS;
 
 /// <summary>Página 2 – Agenda / Calendario General, sin dependencia de base de datos.</summary>
-public partial class Pagina2 : Form
+public partial class AgendaForm : Form
 {
     private readonly List<TurnoAgenda> _turnos = new();
 
-    public Pagina2()
+    public AgendaForm()
     {
         InitializeComponent();
         CargarTurnosDeEjemplo();
