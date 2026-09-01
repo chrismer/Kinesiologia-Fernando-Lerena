@@ -105,6 +105,17 @@ namespace TESTSOLAPAS
             AbrirFormularioEnPanel(new Pagina3(paciente, _evolucionRepository));
         }
 
+        private void btnTurnos_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnTurnos);
+            AbrirFormularioEnPanel(new TESTSOLAPAS.Pantalla_5.BuscadorPacientesForm());
+        }
+
+        private void btnAgenda_Click(object sender, EventArgs e)
+        {
+            MarcarBotonActivo(btnAgenda);
+        }
+
         private void btnConfig_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnConfig);
