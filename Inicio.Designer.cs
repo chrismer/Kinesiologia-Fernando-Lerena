@@ -172,6 +172,7 @@ namespace TESTSOLAPAS
             btnTurnos.TabIndex = 29;
             btnTurnos.Text = "Turnos";
             btnTurnos.UseVisualStyleBackColor = false;
+            btnTurnos.Click += btnTurnos_Click;
             // 
             // panel7
             // 

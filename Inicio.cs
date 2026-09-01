@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using TESTSOLAPAS.Pantalla_5;
 
 namespace TESTSOLAPAS
 {
@@ -90,6 +91,7 @@ namespace TESTSOLAPAS
         {
             MarcarBotonActivo(btnDashboard);
             // TODO: AbrirFormularioEnPanel(new Dashboard());
+            AbrirFormularioEnPanel(new DashBoard());
         }
 
         private void btnPacientes_Click(object sender, EventArgs e)
