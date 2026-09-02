@@ -382,7 +382,6 @@ namespace TESTSOLAPAS
             Name = "AgendaForm";
             Padding = new Padding(14);
             Text = "Agenda Completa";
-            Load += Pagina2_Load;
             panelTitulo.ResumeLayout(false);
             panelTitulo.PerformLayout();
             grpFiltros.ResumeLayout(false);
