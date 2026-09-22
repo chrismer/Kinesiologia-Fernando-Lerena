@@ -163,7 +163,12 @@ namespace TESTSOLAPAS
         private void AtenderPaciente(Paciente paciente)
         {
             // turnoId = null → evolución suelta (ya soportado por PacienteForm)
-            _abrirEnPanel(new PacienteForm(paciente, _evolucionRepository));
+            _abrirEnPanel(new PacienteForm(
+                paciente,
+                _evolucionRepository,
+                turnoId: null,
+                onVolver: () => _abrirEnPanel(new BuscadorPacientesForm(_pacienteRepository, _evolucionRepository, _abrirEnPanel))
+            ));
         }
 
         /// <summary>

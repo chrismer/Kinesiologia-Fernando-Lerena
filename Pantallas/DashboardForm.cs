@@ -197,7 +197,12 @@ namespace TESTSOLAPAS
             };
 
             // Abrir PacienteForm inyectándole el turnoId para que al guardar la evolución pase a "Atendido"
-            _abrirEnPanel(new PacienteForm(paciente, _evolucionRepository, turno.Id));
+            _abrirEnPanel(new PacienteForm(
+                paciente,
+                _evolucionRepository,
+                turno.Id,
+                onVolver: () => _abrirEnPanel(new DashBoard(_turnoRepository, _pacienteRepository, _evolucionRepository, _abrirEnPanel))
+            ));
         }
     }
 }

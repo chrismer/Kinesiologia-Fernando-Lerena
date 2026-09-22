@@ -20,16 +20,19 @@ namespace TESTSOLAPAS
         private readonly Paciente _paciente;
         private readonly IEvolucionRepository _repository;
         private readonly int? _turnoId;
+        private readonly Action? _onVolver;
 
         // ── Constructor ──────────────────────────────────────────────
 
         /// <summary>
         /// Crea la pantalla con el paciente, repositorio y opcionalmente el ID del turno en atención.
+        /// onVolver: si se provee, se muestra el botón "← Volver" que ejecuta esta acción.
         /// </summary>
-        public PacienteForm(Paciente paciente, IEvolucionRepository repository, int? turnoId = null)
+        public PacienteForm(Paciente paciente, IEvolucionRepository repository, int? turnoId = null, Action? onVolver = null)
         {
             InitializeComponent();
-            _turnoId = turnoId;
+            _turnoId  = turnoId;
+            _onVolver = onVolver;
 
             // Si el paciente llega nulo (ej. vista previa del diseñador) usamos uno de prueba
             _repository = repository ?? new MemoryEvolucionRepository();
@@ -50,6 +53,10 @@ namespace TESTSOLAPAS
 
         private void Pagina3_Load(object sender, EventArgs e)
         {
+            // Mostrar/ocultar botón Volver según si se recibió el callback
+            btnVolver.Visible = _onVolver != null;
+            btnVolver.Click  += (s, ev) => _onVolver?.Invoke();
+
             CargarDatosPaciente();
             CargarHistorial();
         }
@@ -76,23 +83,34 @@ namespace TESTSOLAPAS
 
             List<EvolucionSesion> historial = _repository.ObtenerHistorialPorPaciente(_paciente.Id);
 
-            foreach (var sesion in historial)
+            if (historial.Count == 0)
             {
-                string tecnicas = string.IsNullOrWhiteSpace(sesion.TecnicasAplicadas)
-                    ? "—"
-                    : sesion.TecnicasAplicadas;
+                lblTituloHistorial.Text = "Historial de Sesiones  —  (Sin sesiones previas registradas)";
+                lblTituloHistorial.ForeColor = Color.FromArgb(120, 120, 140);
+            }
+            else
+            {
+                lblTituloHistorial.Text = $"Historial de Sesiones ({historial.Count})";
+                lblTituloHistorial.ForeColor = Color.FromArgb(0, 0, 64);
 
-                // Truncamos el comentario para que no desborde la celda
-                string resumen = sesion.ComentariosEvolucion.Length > 80
-                    ? sesion.ComentariosEvolucion.Substring(0, 77) + "..."
-                    : sesion.ComentariosEvolucion;
+                foreach (var sesion in historial)
+                {
+                    string tecnicas = string.IsNullOrWhiteSpace(sesion.TecnicasAplicadas)
+                        ? "—"
+                        : sesion.TecnicasAplicadas;
 
-                gridHistorial.Rows.Add(
-                    sesion.Fecha.ToString("dd/MM/yyyy"),
-                    sesion.Profesional,
-                    $"{sesion.NivelDolorEva}/10",
-                    resumen
-                );
+                    // Truncamos el comentario para que no desborde la celda
+                    string resumen = sesion.ComentariosEvolucion.Length > 80
+                        ? sesion.ComentariosEvolucion.Substring(0, 77) + "..."
+                        : sesion.ComentariosEvolucion;
+
+                    gridHistorial.Rows.Add(
+                        sesion.Fecha.ToString("dd/MM/yyyy"),
+                        sesion.Profesional,
+                        $"{sesion.NivelDolorEva}/10",
+                        resumen
+                    );
+                }
             }
         }
 

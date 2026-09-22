@@ -221,7 +221,12 @@ namespace TESTSOLAPAS
             };
 
             // Abrir PacienteForm inyectándole el turnoId
-            _abrirEnPanel(new PacienteForm(paciente, _evolucionRepository, turno.Id));
+            _abrirEnPanel(new PacienteForm(
+                paciente,
+                _evolucionRepository,
+                turno.Id,
+                onVolver: () => _abrirEnPanel(new TurnosForm(_turnoRepository, _pacienteRepository, _evolucionRepository, _abrirEnPanel))
+            ));
         }
     }
 }
