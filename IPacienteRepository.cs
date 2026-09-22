@@ -16,5 +16,11 @@ namespace TESTSOLAPAS
 
         /// <summary>Inserta o actualiza un paciente.</summary>
         void Guardar(Paciente paciente);
+
+        /// <summary>
+        /// Devuelve los datos completos de un paciente (todos los campos de la tabla
+        /// más la obra social) para mostrar en la ficha de detalle. Devuelve null si no existe.
+        /// </summary>
+        PacienteDetalle? ObtenerDetallePorId(int pacienteId);
     }
 }

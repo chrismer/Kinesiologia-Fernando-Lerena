@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using TESTSOLAPAS.Pantalla_5;
 
 namespace TESTSOLAPAS
 {
@@ -100,14 +99,8 @@ namespace TESTSOLAPAS
         private void btnPacientes_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnPacientes);
-
-            // Obtener el primer paciente disponible (demo o de la DB)
-            var pacientes = _pacienteRepository.ObtenerTodos();
-            var paciente = pacientes.Count > 0
-                ? pacientes[0]
-                : new Paciente { Id = 0, NombreCompleto = "Sin pacientes", Dni = "—" };
-
-            AbrirFormularioEnPanel(new PacienteForm(paciente, _evolucionRepository));
+            AbrirFormularioEnPanel(new BuscadorPacientesForm(
+                _pacienteRepository, _evolucionRepository, AbrirFormularioEnPanel));
         }
 
         private void btnTurnos_Click(object sender, EventArgs e)
@@ -145,5 +138,31 @@ namespace TESTSOLAPAS
         public List<Paciente> ObtenerTodos() => new List<Paciente> { _pacienteDemo };
         public Paciente? ObtenerPorId(int pacienteId) => _pacienteDemo;
         public void Guardar(Paciente paciente) { /* no-op en memoria */ }
+
+        public PacienteDetalle? ObtenerDetallePorId(int pacienteId)
+        {
+            // Devuelve una ficha de detalle con los datos del paciente demo
+            var partes = _pacienteDemo.NombreCompleto.Split(' ', 2);
+            return new PacienteDetalle
+            {
+                Id          = _pacienteDemo.Id,
+                Documento   = _pacienteDemo.Dni,
+                Nombre      = partes[0],
+                Apellido    = partes.Length > 1 ? partes[1] : string.Empty,
+                FechaNac    = new DateTime(1992, 3, 15),
+                Edad        = DateTime.Today.Year - 1992,
+                Sexo        = "Femenino",
+                Calle       = "Av. San Martín 1234",
+                Localidad   = "Paraná",
+                CodPostal   = "3100",
+                Telefono1   = "0343-4561234",
+                Email       = "maria.gomez@email.com",
+                ObraSocial  = _pacienteDemo.Cobertura,
+                OsAfiliado  = "12378738-00",
+                OsPlan      = "210",
+                FechaIngreso = DateTime.Today,
+                Observaciones = _pacienteDemo.MotivoConsulta
+            };
+        }
     }
 }
