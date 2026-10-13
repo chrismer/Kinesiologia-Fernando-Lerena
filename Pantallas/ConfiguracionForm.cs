@@ -20,6 +20,7 @@ namespace TESTSOLAPAS
             dataGridView1.SelectionChanged += (_, _) => ActualizarBotonBaja();
 
             button1.Click += btnCrearUsuario_Click;
+            btnEditarUsuario.Click += btnEditarUsuario_Click;
             button3.Click += btnBajaActivar_Click;
         }
 
@@ -76,6 +77,7 @@ namespace TESTSOLAPAS
         private void ActualizarBotonBaja()
         {
             var u = UsuarioSeleccionado;
+            btnEditarUsuario.Enabled = u is not null;
             button3.Enabled = u is not null && u.Id != _usuarioActualId;
             button3.Text = u is { Activo: false } ? "✅👤 Reactivar" : "❌👤Baja / Desactivar";
         }
@@ -85,6 +87,30 @@ namespace TESTSOLAPAS
             using var dlg = new NuevoUsuarioDialog(_usuarioRepository);
             if (dlg.ShowDialog(this) == DialogResult.OK)
                 CargarUsuarios();
+        }
+
+        private void btnEditarUsuario_Click(object? sender, EventArgs e)
+        {
+            var u = UsuarioSeleccionado;
+            if (u is null)
+                return;
+
+            byte[]? fotoActual;
+            try
+            {
+                fotoActual = _usuarioRepository.ObtenerFoto(u.Id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo leer el usuario.\n" + ex.Message,
+                    "Usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using var dlg = new EditarUsuarioDialog(_usuarioRepository, u, fotoActual);
+            if (dlg.ShowDialog(this) == DialogResult.OK && u.Id == _usuarioActualId && dlg.FotoCambiada)
+                MessageBox.Show("Tu foto nueva se ve en el encabezado la próxima vez que entres.",
+                    "Usuarios", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnBajaActivar_Click(object? sender, EventArgs e)

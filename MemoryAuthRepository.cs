@@ -119,6 +119,35 @@ namespace TESTSOLAPAS
             }
         }
 
+        public byte[]? ObtenerFoto(int usuarioId)
+        {
+            lock (_lock)
+            {
+                return _usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId)?.Foto;
+            }
+        }
+
+        public void CambiarFoto(int usuarioId, byte[]? foto)
+        {
+            lock (_lock)
+            {
+                var row = _usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
+                if (row is not null)
+                    row.Foto = foto;
+            }
+        }
+
+        public void CambiarClave(int usuarioId, string clave)
+        {
+            var hash = BC.HashPassword(clave, workFactor: 10);
+            lock (_lock)
+            {
+                var row = _usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
+                if (row is not null)
+                    row.PasswordHash = hash;
+            }
+        }
+
         private static bool ClaveValida(string clave, string passwordHash)
         {
             try

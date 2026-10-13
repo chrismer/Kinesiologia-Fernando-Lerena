@@ -78,5 +78,30 @@ namespace TESTSOLAPAS
                 "UPDATE usuario SET activo = @Activo WHERE pk_usuario = @Id",
                 new { Id = usuarioId, Activo = activo });
         }
+
+        public byte[]? ObtenerFoto(int usuarioId)
+        {
+            using var conn = DbConnectionFactory.CreateConnection();
+            return conn.QueryFirstOrDefault<byte[]?>(
+                "SELECT foto FROM usuario WHERE pk_usuario = @Id",
+                new { Id = usuarioId });
+        }
+
+        public void CambiarFoto(int usuarioId, byte[]? foto)
+        {
+            using var conn = DbConnectionFactory.CreateConnection();
+            conn.Execute(
+                "UPDATE usuario SET foto = @Foto WHERE pk_usuario = @Id",
+                new { Id = usuarioId, Foto = foto });
+        }
+
+        public void CambiarClave(int usuarioId, string clave)
+        {
+            var hash = BC.HashPassword(clave, workFactor: 10);
+            using var conn = DbConnectionFactory.CreateConnection();
+            conn.Execute(
+                "UPDATE usuario SET password_hash = @Hash WHERE pk_usuario = @Id",
+                new { Id = usuarioId, Hash = hash });
+        }
     }
 }

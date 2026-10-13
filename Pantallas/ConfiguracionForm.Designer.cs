@@ -51,6 +51,7 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
+            btnEditarUsuario = new Button();
             panel5 = new Panel();
             label1 = new Label();
             panel1.SuspendLayout();
@@ -255,6 +256,7 @@
             // 
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(button1);
+            flowLayoutPanel1.Controls.Add(btnEditarUsuario);
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Controls.Add(button3);
             flowLayoutPanel1.Dock = DockStyle.Fill;
@@ -275,6 +277,17 @@
             button1.TabIndex = 0;
             button1.Text = "👤➕ Crear Usuario";
             button1.UseVisualStyleBackColor = true;
+            // 
+            // btnEditarUsuario
+            // 
+            btnEditarUsuario.Anchor = AnchorStyles.None;
+            btnEditarUsuario.Font = new Font("Segoe UI", 11.25F);
+            btnEditarUsuario.Name = "btnEditarUsuario";
+            btnEditarUsuario.Padding = new Padding(5);
+            btnEditarUsuario.Size = new Size(200, 45);
+            btnEditarUsuario.TabIndex = 3;
+            btnEditarUsuario.Text = "🖼🔑 Foto / Clave";
+            btnEditarUsuario.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -366,6 +379,7 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private Button btnEditarUsuario;
         private FlowLayoutPanel flowLayoutPanel2;
         private Button button4;
         private Button button5;

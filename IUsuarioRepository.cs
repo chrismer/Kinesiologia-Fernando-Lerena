@@ -19,6 +19,15 @@ namespace TESTSOLAPAS
 
         /// <summary>Activa o desactiva el login de un usuario. No toca su profesional ni sus turnos.</summary>
         void CambiarActivo(int usuarioId, bool activo);
+
+        /// <summary>Foto de perfil actual (JPEG), o null si no tiene.</summary>
+        byte[]? ObtenerFoto(int usuarioId);
+
+        /// <summary>Reemplaza la foto de perfil. Null la borra.</summary>
+        void CambiarFoto(int usuarioId, byte[]? foto);
+
+        /// <summary>Guarda una clave nueva. Recibe texto plano y persiste solo el hash BCrypt.</summary>
+        void CambiarClave(int usuarioId, string clave);
     }
 
     /// <summary>El nombre de usuario ya está tomado (sin distinguir mayúsculas).</summary>
