@@ -76,5 +76,38 @@ namespace TESTSOLAPAS
                 );
             }
         }
+        public PacienteDetalle? ObtenerDetallePorId(int pacienteId)
+        {
+            using var conn = DbConnectionFactory.CreateConnection();
+            return conn.QueryFirstOrDefault<PacienteDetalle>(
+                @"SELECT
+                      p.pk_paciente          AS Id,
+                      p.documento            AS Documento,
+                      p.nombre               AS Nombre,
+                      p.apellido             AS Apellido,
+                      p.fechanac             AS FechaNac,
+                      CASE WHEN p.fechanac IS NOT NULL
+                           THEN EXTRACT(YEAR FROM AGE(p.fechanac))::INT
+                           ELSE NULL
+                      END                    AS Edad,
+                      COALESCE(p.sexo, '')            AS Sexo,
+                      COALESCE(p.calle, '')            AS Calle,
+                      COALESCE(p.localidad, '')        AS Localidad,
+                      COALESCE(p.codpostal, '')        AS CodPostal,
+                      COALESCE(p.telefono1, '')        AS Telefono1,
+                      COALESCE(p.telefono2, '')        AS Telefono2,
+                      COALESCE(p.telefono3, '')        AS Telefono3,
+                      COALESCE(p.email, '')            AS Email,
+                      COALESCE(os.descripcion, 'Particular') AS ObraSocial,
+                      COALESCE(p.osafiliado, '')       AS OsAfiliado,
+                      COALESCE(p.osplan, '')           AS OsPlan,
+                      p.fechaingreso                  AS FechaIngreso,
+                      COALESCE(p.observaciones, '')   AS Observaciones
+                  FROM paciente p
+                  LEFT JOIN obrasocial os ON os.pk_os = p.fk_os
+                  WHERE p.pk_paciente = @Id",
+                new { Id = pacienteId }
+            );
+        }
     }
 }

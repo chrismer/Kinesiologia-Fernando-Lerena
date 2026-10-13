@@ -44,4 +44,35 @@ namespace TESTSOLAPAS
         /// </summary>
         public string ComentariosEvolucion { get; set; } = string.Empty;
     }
+
+    /// <summary>
+    /// Datos completos de un paciente para la ficha de detalle (modal).
+    /// Incluye todos los campos de la tabla paciente + obra social.
+    /// No reemplaza a Paciente: el listado sigue usando el DTO liviano.
+    /// </summary>
+    public class PacienteDetalle
+    {
+        public int Id { get; set; }
+        public string Documento { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido { get; set; } = string.Empty;
+        public DateTime? FechaNac { get; set; }
+        public int? Edad { get; set; }           // calculado con AGE() en la query
+        public string Sexo { get; set; } = string.Empty;
+        public string Calle { get; set; } = string.Empty;
+        public string Localidad { get; set; } = string.Empty;
+        public string CodPostal { get; set; } = string.Empty;
+        public string Telefono1 { get; set; } = string.Empty;
+        public string Telefono2 { get; set; } = string.Empty;
+        public string Telefono3 { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string ObraSocial { get; set; } = string.Empty;   // descripcion de obrasocial
+        public string OsAfiliado { get; set; } = string.Empty;
+        public string OsPlan { get; set; } = string.Empty;
+        public DateTime? FechaIngreso { get; set; }
+        public string Observaciones { get; set; } = string.Empty;
+
+        /// <summary>Nombre completo calculado para mostrar en la UI.</summary>
+        public string NombreCompleto => $"{Nombre} {Apellido}".Trim();
+    }
 }
