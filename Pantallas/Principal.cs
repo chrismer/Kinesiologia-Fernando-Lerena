@@ -39,10 +39,18 @@ namespace TESTSOLAPAS
         /// </summary>
         public SesionActual? Sesion { get; }
 
+        /// <summary>
+        /// True si se cerró con "Cerrar sesión". Program.cs vuelve a mostrar LogIn;
+        /// si se cerró con la X, la app termina.
+        /// </summary>
+        public bool CerrarSesionPedida { get; private set; }
+
         public Principal(SesionActual sesion) : this()
         {
             Sesion = sesion;
             Text = $"Kinesiología - {sesion.Nombre}";
+            label1.AutoSize = true;
+            label1.Text = sesion.Nombre;
 
             // Un kinesiólogo ve solo sus turnos y firma sus evoluciones.
             // Admin y recepción siguen viendo los turnos de todos.
@@ -138,6 +146,12 @@ namespace TESTSOLAPAS
         {
             MarcarBotonActivo(btnConfig);
             AbrirFormularioEnPanel(new ConfiguracionForm());
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            CerrarSesionPedida = true;
+            Close();
         }
     }
 

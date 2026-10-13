@@ -16,12 +16,18 @@ namespace TESTSOLAPAS
                 ? new NpgsqlAuthRepository()
                 : new MemoryAuthRepository();
 
-            // Si el usuario cancela o cierra el login, la app termina acá.
-            using var login = new Pantallas.LogIn(authRepo);
-            if (login.ShowDialog() != DialogResult.OK || login.Sesion is null)
-                return;
+            // "Cerrar sesión" vuelve al login. Cancelar el login o cerrar con la X termina la app.
+            while (true)
+            {
+                using var login = new Pantallas.LogIn(authRepo);
+                if (login.ShowDialog() != DialogResult.OK || login.Sesion is null)
+                    return;
 
-            Application.Run(new Principal(login.Sesion));
+                var principal = new Principal(login.Sesion);
+                Application.Run(principal);
+                if (!principal.CerrarSesionPedida)
+                    return;
+            }
         }
     }
 }

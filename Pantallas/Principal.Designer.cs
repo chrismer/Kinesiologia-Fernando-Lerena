@@ -36,6 +36,7 @@ namespace TESTSOLAPAS
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
             btnConfig = new Button();
+            btnCerrarSesion = new Button();
             panel6 = new Panel();
             btnTurnos = new Button();
             panel7 = new Panel();
@@ -114,6 +115,7 @@ namespace TESTSOLAPAS
             // 
             panel2.BackColor = Color.MidnightBlue;
             panel2.BorderStyle = BorderStyle.Fixed3D;
+            panel2.Controls.Add(btnCerrarSesion);
             panel2.Controls.Add(btnConfig);
             panel2.Controls.Add(panel6);
             panel2.Controls.Add(btnTurnos);
@@ -146,6 +148,21 @@ namespace TESTSOLAPAS
             btnConfig.Text = "Configuración";
             btnConfig.UseVisualStyleBackColor = false;
             btnConfig.Click += btnConfig_Click;
+            // 
+            // btnCerrarSesion
+            // 
+            btnCerrarSesion.BackColor = SystemColors.ControlLight;
+            btnCerrarSesion.Dock = DockStyle.Bottom;
+            btnCerrarSesion.FlatStyle = FlatStyle.Flat;
+            btnCerrarSesion.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnCerrarSesion.ForeColor = Color.FromArgb(0, 0, 64);
+            btnCerrarSesion.Name = "btnCerrarSesion";
+            btnCerrarSesion.Padding = new Padding(10, 0, 0, 0);
+            btnCerrarSesion.Size = new Size(175, 40);
+            btnCerrarSesion.TabIndex = 32;
+            btnCerrarSesion.Text = "Cerrar sesión";
+            btnCerrarSesion.UseVisualStyleBackColor = false;
+            btnCerrarSesion.Click += btnCerrarSesion_Click;
             // 
             // panel6
             // 
@@ -299,6 +316,7 @@ namespace TESTSOLAPAS
         private Label label1;
         private PictureBox pictureBox2;
         private Button btnConfig;
+        private Button btnCerrarSesion;
         private Panel panel6;
         private Button btnTurnos;
         private Panel panel7;
