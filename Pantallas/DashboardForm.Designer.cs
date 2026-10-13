@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
+            dataGridView1 = new DataGridView();
+            Hora = new DataGridViewTextBoxColumn();
+            Paciente = new DataGridViewTextBoxColumn();
+            Tratamiento = new DataGridViewTextBoxColumn();
+            Estado = new DataGridViewTextBoxColumn();
+            Profesional = new DataGridViewTextBoxColumn();
+            splitContainer1 = new SplitContainer();
             panel1 = new Panel();
             btnVerDetalles = new Button();
             lblContadorPacientes = new Label();
@@ -38,22 +45,15 @@
             btnMarcarLlegado = new Button();
             lblTiempoProximoTurno = new Label();
             lblProximoTurno = new Label();
-            dataGridView1 = new DataGridView();
-            Hora = new DataGridViewTextBoxColumn();
-            Paciente = new DataGridViewTextBoxColumn();
-            Tratamiento = new DataGridViewTextBoxColumn();
-            Estado = new DataGridViewTextBoxColumn();
-            Profesional = new DataGridViewTextBoxColumn();
-            splitContainer1 = new SplitContainer();
             label1 = new Label();
             tableLayoutPanel1.SuspendLayout();
-            panel1.SuspendLayout();
-            panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -73,6 +73,69 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.Size = new Size(1089, 438);
             tableLayoutPanel1.TabIndex = 4;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Hora, Paciente, Tratamiento, Estado, Profesional });
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.Location = new Point(3, 68);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(1083, 256);
+            dataGridView1.TabIndex = 1;
+            // 
+            // Hora
+            // 
+            Hora.HeaderText = "Hora";
+            Hora.MinimumWidth = 6;
+            Hora.Name = "Hora";
+            Hora.Width = 125;
+            // 
+            // Paciente
+            // 
+            Paciente.HeaderText = "Paciente";
+            Paciente.MinimumWidth = 6;
+            Paciente.Name = "Paciente";
+            Paciente.Width = 125;
+            // 
+            // Tratamiento
+            // 
+            Tratamiento.HeaderText = "Tratamiento";
+            Tratamiento.MinimumWidth = 6;
+            Tratamiento.Name = "Tratamiento";
+            Tratamiento.Width = 125;
+            // 
+            // Estado
+            // 
+            Estado.HeaderText = "Estado";
+            Estado.MinimumWidth = 6;
+            Estado.Name = "Estado";
+            Estado.Width = 125;
+            // 
+            // Profesional
+            // 
+            Profesional.HeaderText = "Profesional";
+            Profesional.MinimumWidth = 6;
+            Profesional.Name = "Profesional";
+            Profesional.Width = 125;
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(3, 330);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(panel1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(panel2);
+            splitContainer1.Size = new Size(1083, 105);
+            splitContainer1.SplitterDistance = 518;
+            splitContainer1.TabIndex = 5;
             // 
             // panel1
             // 
@@ -169,69 +232,6 @@
             lblProximoTurno.TabIndex = 0;
             lblProximoTurno.Text = "Proximo Turno";
             // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Hora, Paciente, Tratamiento, Estado, Profesional });
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(3, 68);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1083, 256);
-            dataGridView1.TabIndex = 1;
-            // 
-            // Hora
-            // 
-            Hora.HeaderText = "Hora";
-            Hora.MinimumWidth = 6;
-            Hora.Name = "Hora";
-            Hora.Width = 125;
-            // 
-            // Paciente
-            // 
-            Paciente.HeaderText = "Paciente";
-            Paciente.MinimumWidth = 6;
-            Paciente.Name = "Paciente";
-            Paciente.Width = 125;
-            // 
-            // Tratamiento
-            // 
-            Tratamiento.HeaderText = "Tratamiento";
-            Tratamiento.MinimumWidth = 6;
-            Tratamiento.Name = "Tratamiento";
-            Tratamiento.Width = 125;
-            // 
-            // Estado
-            // 
-            Estado.HeaderText = "Estado";
-            Estado.MinimumWidth = 6;
-            Estado.Name = "Estado";
-            Estado.Width = 125;
-            // 
-            // Profesional
-            // 
-            Profesional.HeaderText = "Profesional";
-            Profesional.MinimumWidth = 6;
-            Profesional.Name = "Profesional";
-            Profesional.Width = 125;
-            // 
-            // splitContainer1
-            // 
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(3, 330);
-            splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            splitContainer1.Panel1.Controls.Add(panel1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            splitContainer1.Panel2.Controls.Add(panel2);
-            splitContainer1.Size = new Size(1083, 105);
-            splitContainer1.SplitterDistance = 518;
-            splitContainer1.TabIndex = 5;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -241,7 +241,7 @@
             label1.Name = "label1";
             label1.Size = new Size(1083, 54);
             label1.TabIndex = 6;
-            label1.Text = "DASH BOARD";
+            label1.Text = "DASHBOARD";
             // 
             // DashBoard
             // 
@@ -250,18 +250,18 @@
             ClientSize = new Size(1089, 438);
             Controls.Add(tableLayoutPanel1);
             Name = "DashBoard";
-            Text = "Dash Board";
+            Text = "DashBoard";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
         }
 
