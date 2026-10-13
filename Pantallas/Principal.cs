@@ -34,6 +34,18 @@ namespace TESTSOLAPAS
             }
         }
 
+        /// <summary>
+        /// Usuario que entró por LogIn. Null si Principal se abrió sin login.
+        /// Todavía no filtra consultas: eso llega en el paso siguiente.
+        /// </summary>
+        public SesionActual? Sesion { get; }
+
+        public Principal(SesionActual sesion) : this()
+        {
+            Sesion = sesion;
+            Text = $"Kinesiología - {sesion.Nombre}";
+        }
+
         private void panelMain_Paint(object sender, PaintEventArgs e)
         {
         }

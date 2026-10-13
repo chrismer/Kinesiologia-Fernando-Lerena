@@ -36,6 +36,9 @@
             label2 = new Label();
             IdUsername = new TextBox();
             IdPassword = new TextBox();
+            panelBotones = new FlowLayoutPanel();
+            btnIngresar = new Button();
+            btnCancelar = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -45,6 +48,7 @@
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            panelBotones.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -148,13 +152,46 @@
             IdPassword.Size = new Size(130, 27);
             IdPassword.TabIndex = 0;
             // 
+            // panelBotones
+            // 
+            panelBotones.Controls.Add(btnCancelar);
+            panelBotones.Controls.Add(btnIngresar);
+            panelBotones.Dock = DockStyle.Bottom;
+            panelBotones.FlowDirection = FlowDirection.RightToLeft;
+            panelBotones.Name = "panelBotones";
+            panelBotones.Padding = new Padding(8);
+            panelBotones.Size = new Size(800, 56);
+            panelBotones.TabIndex = 1;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.DialogResult = DialogResult.Cancel;
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(110, 32);
+            btnCancelar.TabIndex = 1;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            // 
+            // btnIngresar
+            // 
+            btnIngresar.Name = "btnIngresar";
+            btnIngresar.Size = new Size(110, 32);
+            btnIngresar.TabIndex = 0;
+            btnIngresar.Text = "Ingresar";
+            btnIngresar.UseVisualStyleBackColor = true;
+            btnIngresar.Click += btnIngresar_Click;
+            // 
             // LogIn
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            AcceptButton = btnIngresar;
+            CancelButton = btnCancelar;
             Controls.Add(tableLayoutPanel1);
+            Controls.Add(panelBotones);
             Name = "LogIn";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "LogIn";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
@@ -170,6 +207,7 @@
             splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            panelBotones.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -183,5 +221,8 @@
         private SplitContainer splitContainer2;
         private Label label2;
         private TextBox IdPassword;
+        private FlowLayoutPanel panelBotones;
+        private Button btnIngresar;
+        private Button btnCancelar;
     }
 }
