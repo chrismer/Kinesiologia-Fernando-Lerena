@@ -32,13 +32,13 @@
             label1 = new Label();
             splitContainer1 = new SplitContainer();
             label3 = new Label();
+            IdUsername = new TextBox();
             splitContainer2 = new SplitContainer();
             label2 = new Label();
-            IdUsername = new TextBox();
             IdPassword = new TextBox();
             panelBotones = new FlowLayoutPanel();
-            btnIngresar = new Button();
             btnCancelar = new Button();
+            btnIngresar = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -66,7 +66,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Size = new Size(800, 450);
+            tableLayoutPanel1.Size = new Size(800, 394);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -74,7 +74,7 @@
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 24F);
-            label1.Location = new Point(279, 47);
+            label1.Location = new Point(279, 38);
             label1.Name = "label1";
             label1.Size = new Size(241, 54);
             label1.TabIndex = 0;
@@ -83,7 +83,7 @@
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(3, 152);
+            splitContainer1.Location = new Point(3, 134);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
             // 
@@ -94,8 +94,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(IdUsername);
-            splitContainer1.Size = new Size(794, 143);
-            splitContainer1.SplitterDistance = 66;
+            splitContainer1.Size = new Size(794, 125);
+            splitContainer1.SplitterDistance = 57;
             splitContainer1.TabIndex = 3;
             // 
             // label3
@@ -108,10 +108,17 @@
             label3.TabIndex = 0;
             label3.Text = "Usuario";
             // 
+            // IdUsername
+            // 
+            IdUsername.Location = new Point(332, 24);
+            IdUsername.Name = "IdUsername";
+            IdUsername.Size = new Size(130, 27);
+            IdUsername.TabIndex = 0;
+            // 
             // splitContainer2
             // 
             splitContainer2.Dock = DockStyle.Fill;
-            splitContainer2.Location = new Point(3, 301);
+            splitContainer2.Location = new Point(3, 265);
             splitContainer2.Name = "splitContainer2";
             splitContainer2.Orientation = Orientation.Horizontal;
             // 
@@ -122,8 +129,8 @@
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(IdPassword);
-            splitContainer2.Size = new Size(794, 146);
-            splitContainer2.SplitterDistance = 74;
+            splitContainer2.Size = new Size(794, 126);
+            splitContainer2.SplitterDistance = 63;
             splitContainer2.TabIndex = 4;
             // 
             // label2
@@ -131,18 +138,11 @@
             label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F);
-            label2.Location = new Point(341, 34);
+            label2.Location = new Point(332, 21);
             label2.Name = "label2";
             label2.Size = new Size(110, 28);
             label2.TabIndex = 0;
             label2.Text = "Contraseña";
-            // 
-            // IdUsername
-            // 
-            IdUsername.Location = new Point(332, 24);
-            IdUsername.Name = "IdUsername";
-            IdUsername.Size = new Size(130, 27);
-            IdUsername.TabIndex = 0;
             // 
             // IdPassword
             // 
@@ -150,7 +150,7 @@
             IdPassword.Name = "IdPassword";
             IdPassword.PasswordChar = '*';
             IdPassword.Size = new Size(130, 27);
-            IdPassword.TabIndex = 0;
+            IdPassword.TabIndex = 1;
             // 
             // panelBotones
             // 
@@ -158,6 +158,7 @@
             panelBotones.Controls.Add(btnIngresar);
             panelBotones.Dock = DockStyle.Bottom;
             panelBotones.FlowDirection = FlowDirection.RightToLeft;
+            panelBotones.Location = new Point(0, 394);
             panelBotones.Name = "panelBotones";
             panelBotones.Padding = new Padding(8);
             panelBotones.Size = new Size(800, 56);
@@ -166,6 +167,7 @@
             // btnCancelar
             // 
             btnCancelar.DialogResult = DialogResult.Cancel;
+            btnCancelar.Location = new Point(671, 11);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(110, 32);
             btnCancelar.TabIndex = 1;
@@ -174,6 +176,7 @@
             // 
             // btnIngresar
             // 
+            btnIngresar.Location = new Point(555, 11);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(110, 32);
             btnIngresar.TabIndex = 0;
@@ -183,11 +186,11 @@
             // 
             // LogIn
             // 
+            AcceptButton = btnIngresar;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            AcceptButton = btnIngresar;
             CancelButton = btnCancelar;
+            ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panelBotones);
             Name = "LogIn";
