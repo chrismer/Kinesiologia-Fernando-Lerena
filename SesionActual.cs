@@ -11,5 +11,8 @@ namespace TESTSOLAPAS
         public string Nombre { get; init; } = "";
         public string Color { get; init; } = "#007ACC";
         public string Rol { get; init; } = "";
+
+        /// <summary>Foto de perfil (JPEG). Null si el usuario no subió ninguna.</summary>
+        public byte[]? Foto { get; init; }
     }
 }

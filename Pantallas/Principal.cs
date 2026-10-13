@@ -14,6 +14,7 @@ namespace TESTSOLAPAS
         private readonly IEvolucionRepository _evolucionRepository;
         private readonly IPacienteRepository _pacienteRepository;
         private readonly ITurnoRepository _turnoRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
         public Principal()
         {
@@ -24,6 +25,7 @@ namespace TESTSOLAPAS
                 _evolucionRepository = new NpgsqlEvolucionRepository();
                 _pacienteRepository  = new NpgsqlPacienteRepository();
                 _turnoRepository     = new NpgsqlTurnoRepository();
+                _usuarioRepository   = new NpgsqlUsuarioRepository();
             }
             else
             {
@@ -31,6 +33,7 @@ namespace TESTSOLAPAS
                 _evolucionRepository = memRepo;
                 _pacienteRepository  = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
                 _turnoRepository     = new MemoryTurnoRepository();
+                _usuarioRepository   = new MemoryAuthRepository();
             }
         }
 
@@ -51,6 +54,13 @@ namespace TESTSOLAPAS
             Text = $"Kinesiología - {sesion.Nombre}";
             label1.AutoSize = true;
             label1.Text = sesion.Nombre;
+
+            var foto = FotoHelper.ABitmap(sesion.Foto);
+            if (foto is not null)
+                pictureBox2.Image = foto;
+
+            // Configuración (alta y baja de usuarios) es solo para admin.
+            btnConfig.Visible = sesion.Rol == "admin";
 
             // Un kinesiólogo ve solo sus turnos y firma sus evoluciones.
             // Admin y recepción siguen viendo los turnos de todos.
@@ -144,8 +154,11 @@ namespace TESTSOLAPAS
 
         private void btnConfig_Click(object sender, EventArgs e)
         {
+            if (Sesion is not { Rol: "admin" } sesion)
+                return;
+
             MarcarBotonActivo(btnConfig);
-            AbrirFormularioEnPanel(new ConfiguracionForm());
+            AbrirFormularioEnPanel(new ConfiguracionForm(_usuarioRepository, sesion.UsuarioId));
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)

@@ -23,9 +23,10 @@ namespace TESTSOLAPAS
                          u.rol AS Rol,
                          u.activo AS UsuarioActivo,
                          u.fk_profesional AS ProfesionalId,
-                         p.nombre AS Nombre,
+                         COALESCE(p.nombre, u.nombre) AS Nombre,
                          p.color AS Color,
-                         p.activo AS ProfesionalActivo
+                         p.activo AS ProfesionalActivo,
+                         u.foto AS Foto
                   FROM usuario u
                   LEFT JOIN profesional p ON p.pk_profesional = u.fk_profesional
                   WHERE lower(u.usuario) = lower(@Usuario)
@@ -48,7 +49,8 @@ namespace TESTSOLAPAS
                 ProfesionalId = row.ProfesionalId,
                 Nombre = string.IsNullOrWhiteSpace(row.Nombre) ? row.Login : row.Nombre,
                 Color = string.IsNullOrWhiteSpace(row.Color) ? "#007ACC" : row.Color,
-                Rol = row.Rol
+                Rol = row.Rol,
+                Foto = row.Foto
             };
         }
 
@@ -75,6 +77,7 @@ namespace TESTSOLAPAS
             public string? Nombre { get; set; }
             public string? Color { get; set; }
             public bool? ProfesionalActivo { get; set; }
+            public byte[]? Foto { get; set; }
         }
     }
 }
