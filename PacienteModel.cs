@@ -29,6 +29,12 @@ namespace TESTSOLAPAS
         public string Profesional { get; set; } = string.Empty;
 
         /// <summary>
+        /// Profesional que firma la evolución. Si viene, se usa tal cual;
+        /// si es null, el repositorio lo busca por nombre.
+        /// </summary>
+        public int? ProfesionalId { get; set; }
+
+        /// <summary>
         /// Nivel de dolor según la Escala Visual Analógica (EVA), de 0 a 10.
         /// </summary>
         public int NivelDolorEva { get; set; }

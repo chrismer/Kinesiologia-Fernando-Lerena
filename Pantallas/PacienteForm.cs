@@ -167,7 +167,7 @@ namespace TESTSOLAPAS
                 PacienteId           = _paciente.Id,
                 TurnoId              = _turnoId,
                 Fecha                = DateTime.Now,
-                Profesional          = "Dr. Juan Pérez",   // TODO: reemplazar con el usuario logueado
+                Profesional          = "Dr. Juan Pérez",   // Solo sin login: EvolucionRepositoryPorSesion lo reemplaza por el usuario logueado
                 NivelDolorEva        = (int)numEva.Value,
                 TecnicasAplicadas    = string.Join(", ", tecnicas),
                 ComentariosEvolucion = txtComentarios.Text.Trim()

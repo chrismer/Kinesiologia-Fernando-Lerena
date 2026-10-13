@@ -36,7 +36,6 @@ namespace TESTSOLAPAS
 
         /// <summary>
         /// Usuario que entró por LogIn. Null si Principal se abrió sin login.
-        /// Todavía no filtra consultas: eso llega en el paso siguiente.
         /// </summary>
         public SesionActual? Sesion { get; }
 
@@ -44,6 +43,14 @@ namespace TESTSOLAPAS
         {
             Sesion = sesion;
             Text = $"Kinesiología - {sesion.Nombre}";
+
+            // Un kinesiólogo ve solo sus turnos y firma sus evoluciones.
+            // Admin y recepción siguen viendo los turnos de todos.
+            if (sesion.Rol == "kinesiologo" && sesion.ProfesionalId.HasValue)
+            {
+                _turnoRepository     = new TurnoRepositoryPorSesion(_turnoRepository, sesion.ProfesionalId.Value);
+                _evolucionRepository = new EvolucionRepositoryPorSesion(_evolucionRepository, sesion);
+            }
         }
 
         private void panelMain_Paint(object sender, PaintEventArgs e)

@@ -35,8 +35,8 @@ namespace TESTSOLAPAS
         {
             using var conn = DbConnectionFactory.CreateConnection();
 
-            // Buscar el PK_Profesional por nombre (simplificado para esta fase)
-            int? profesionalId = conn.QueryFirstOrDefault<int?>(
+            // Con login, el id viene de la sesión. Sin sesión, buscar el PK_Profesional por nombre.
+            int? profesionalId = evolucion.ProfesionalId ?? conn.QueryFirstOrDefault<int?>(
                 "SELECT pk_profesional FROM profesional WHERE nombre = @Nombre LIMIT 1",
                 new { Nombre = evolucion.Profesional }
             );
