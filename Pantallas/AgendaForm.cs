@@ -120,13 +120,20 @@ namespace TESTSOLAPAS
         {
             grillaAgenda.Columns.Clear();
             grillaAgenda.Rows.Clear();
+
+            // Configurar cabeceras para permitir saltos de línea y centrado
+            grillaAgenda.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            grillaAgenda.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             foreach (string encabezado in encabezados)
+            {
                 grillaAgenda.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     HeaderText = encabezado,
                     SortMode = DataGridViewColumnSortMode.NotSortable,
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 });
+            }
             grillaAgenda.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             grillaAgenda.Columns[0].Width = 64;
         }
@@ -136,14 +143,20 @@ namespace TESTSOLAPAS
             lblVistaActual.Text = "Agenda semanal";
             DateTime inicio = InicioSemana(calendario.SelectionStart);
             DateTime[] dias = Enumerable.Range(0, 5).Select(i => inicio.AddDays(i)).ToArray();
-            PrepararColumnas(new[] { "Hora" }.Concat(dias.Select(d => d.ToString("dddd\ndd/MM", new CultureInfo("es-AR")))).ToArray());
+
+            // Separar de forma limpia el día y la fecha con interpolación
+            var encabezados = new[] { "Hora" }
+                .Concat(dias.Select(d => $"{d.ToString("dddd", new CultureInfo("es-AR"))}\n{d:dd/MM}"))
+                .ToArray();
+
+            PrepararColumnas(encabezados);
 
             List<TurnoItem> turnos = TurnosFiltrados().Where(t => dias.Contains(t.Fecha.Date)).ToList();
 
             for (int hora = 8; hora <= 18; hora++)
             {
                 int fila = grillaAgenda.Rows.Add($"{hora:00}:00");
-                grillaAgenda.Rows[fila].Height = 44;
+                grillaAgenda.Rows[fila].Height = 52; // Altura aumentada para dos renglones cómodos
                 foreach (TurnoItem turno in turnos.Where(t => t.Hora.Hours == hora))
                 {
                     int diaIdx = Array.IndexOf(dias, turno.Fecha.Date);
@@ -167,7 +180,7 @@ namespace TESTSOLAPAS
             for (int hora = 8; hora <= 18; hora++)
             {
                 int fila = grillaAgenda.Rows.Add($"{hora:00}:00");
-                grillaAgenda.Rows[fila].Height = 44;
+                grillaAgenda.Rows[fila].Height = 52;
                 TurnoItem? turno = turnos.FirstOrDefault(t => t.Hora.Hours == hora);
                 if (turno is not null)
                 {
@@ -198,6 +211,10 @@ namespace TESTSOLAPAS
                     int cantidad = turnos.Count(t => t.Fecha.Date == fecha);
                     DataGridViewCell celda = grillaAgenda.Rows[fila].Cells[dia + 1];
                     celda.Value = fecha.Month == primerDia.Month ? $"{fecha:dd}\n{cantidad} turno(s)" : string.Empty;
+
+                    celda.Style.WrapMode = DataGridViewTriState.True;
+                    celda.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
                     if (fecha.Month == primerDia.Month) PintarSaturacion(celda, cantidad);
                 }
             }
@@ -208,6 +225,7 @@ namespace TESTSOLAPAS
 
         private static void PintarTurno(DataGridViewCell celda, TurnoItem turno)
         {
+            // Salto de línea limpio separando el nombre de la hora y diagnóstico
             celda.Value = $"{turno.PacienteNombre}\n{turno.Hora:hh\\:mm} - {turno.Diagnostico}";
             celda.Tag = turno;
             celda.ToolTipText = $"{turno.Fecha:dd/MM} {turno.Hora:hh\\:mm} · {turno.ProfesionalNombre} · {turno.Estado}";
@@ -225,6 +243,10 @@ namespace TESTSOLAPAS
             celda.Style.BackColor = turno.Estado == "Atendido" ? Color.FromArgb(40, 167, 69) : colorBase;
             celda.Style.ForeColor = Color.White;
             celda.Style.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+
+            // Permitir saltos de línea y centrado perfecto
+            celda.Style.WrapMode = DataGridViewTriState.True;
+            celda.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         private static void PintarSaturacion(DataGridViewCell celda, int cantidad)
