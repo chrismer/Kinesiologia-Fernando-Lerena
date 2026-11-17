@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Documentación del sistema de gestión para el consultorio de kinesiología Fernando Lerena.">
+  <title>Kinesiología Lerena — Documentación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --medical: #0077B6;
+      --cyan: #0891B2;
+      --cyan-soft: #22D3EE;
+      --health: #059669;
+      --bg: #F3F9FA;
+      --bg-2: #ECFEFF;
+      --surface: rgba(255, 255, 255, 0.72);
+      --text: #164E63;
+      --text-strong: #0B3140;
+      --muted: #4A7280;
+      --border: #B8E6EE;
+      --card: #FFFFFF;
+      --shadow: 0 18px 50px rgba(0, 80, 110, 0.08);
+      --ring: #0891B2;
+      --danger: #DC2626;
+      --nav: rgba(243, 249, 250, 0.82);
+      --code-bg: #0E2A33;
+      --code-fg: #E8F6F8;
+      --spine: #0077B6;
+      --radius: 18px;
+      --max: 1240px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #07151A;
+      --bg-2: #0B1F26;
+      --surface: rgba(14, 42, 51, 0.72);
+      --text: #D5EEF3;
+      --text-strong: #F4FCFD;
+      --muted: #8FB4BE;
+      --border: #1F4A56;
+      --card: #0E2A33;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --nav: rgba(7, 21, 26, 0.86);
+      --code-bg: #051015;
+      --spine: #22D3EE;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, rgba(34, 211, 238, 0.18), transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, rgba(5, 150, 105, 0.08), transparent 50%),
+        var(--bg);
+    }
+
+    h1, h2, h3, h4, .ui, button, input, nav, .badge, .kicker {
+      font-family: Sora, system-ui, sans-serif;
+    }
+
+    a { color: var(--cyan); }
+    a:hover { color: var(--medical); }
+    :focus-visible {
+      outline: 3px solid var(--ring);
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 22px;
+      background: var(--nav);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-strong);
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+    .mark {
+      width: 34px;
+      height: 34px;
+      flex: none;
+    }
+    .search-wrap {
+      flex: 1;
+      position: relative;
+      max-width: 420px;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    #q {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px 0 40px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text-strong);
+      font: 500 14px Sora, sans-serif;
+    }
+    .top-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-strong);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .icon-btn:hover { border-color: var(--cyan); }
+
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 72px 24px 36px;
+    }
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .kicker i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--health);
+      display: inline-block;
+    }
+    h1 {
+      margin: 12px 0 14px;
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+      color: var(--text-strong);
+      max-width: 16ch;
+    }
+    .lede {
+      max-width: 62ch;
+      font-size: 1.15rem;
+      color: var(--muted);
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-strong);
+    }
+
+    .shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px 24px 96px;
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 42px;
+    }
+    .toc {
+      position: sticky;
+      top: 78px;
+      align-self: start;
+      padding: 8px 0;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0 7px 14px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      border-left: 2px solid var(--border);
+    }
+    .toc a.is-active,
+    .toc a:hover {
+      color: var(--text-strong);
+      border-left-color: var(--spine);
+    }
+
+    .content { min-width: 0; }
+    section {
+      margin: 0 0 64px;
+      scroll-margin-top: 88px;
+    }
+    section.hidden { display: none; }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.7rem;
+      letter-spacing: -0.04em;
+      color: var(--text-strong);
+    }
+    h3 {
+      margin: 28px 0 8px;
+      font-size: 1.12rem;
+      letter-spacing: -0.03em;
+      color: var(--text-strong);
+    }
+    p { margin: 0 0 14px; }
+    .muted { color: var(--muted); }
+
+    .modules {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 10px 0 6px; }
+    .card p { margin: 0; font-size: 0.98rem; }
+    .ico {
+      width: 36px;
+      height: 36px;
+      color: var(--cyan);
+    }
+
+    .jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 22px;
+    }
+    .jump a {
+      text-decoration: none;
+      color: var(--text-strong);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+    }
+    .jump a:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .screen {
+      overflow: hidden;
+      padding: 0;
+      scroll-margin-top: 88px;
+    }
+    .screen-h {
+      padding: 16px 18px 12px;
+    }
+    .screen-h h3 { margin: 0 0 6px; }
+    .screen-h p { color: var(--muted); }
+    .shot {
+      display: block;
+      cursor: zoom-in;
+      background: #07101c;
+      border: 0;
+      width: 100%;
+      padding: 0;
+    }
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .shot.compact {
+      background: linear-gradient(180deg, #dceaf3, #edf4f8);
+      padding: 22px 18px;
+    }
+    .shot.compact img {
+      width: min(420px, 100%);
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0, 40, 70, 0.18);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(7, 21, 26, 0.9);
+      cursor: zoom-out;
+    }
+    .lightbox.is-open { display: grid; }
+    .lightbox img {
+      max-width: min(96vw, 1400px);
+      max-height: 92vh;
+      border-radius: 10px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.45);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Sora, sans-serif;
+      font-size: 14px;
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th {
+      background: color-mix(in srgb, var(--bg-2) 70%, var(--card));
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+    tr:last-child td { border-bottom: 0; }
+
+    .flow {
+      display: grid;
+      gap: 0;
+      margin: 18px 0 8px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      position: relative;
+    }
+    .step:not(:last-child) .step-n::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 42px;
+      bottom: -8px;
+      width: 2px;
+      background: var(--border);
+    }
+    .step-n {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--medical);
+      color: #fff;
+      font: 650 14px Sora, sans-serif;
+      position: relative;
+    }
+    .step + .step { margin-top: 16px; }
+
+    .arch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .arch .card { text-align: center; }
+    .arch small { color: var(--muted); font-family: Sora, sans-serif; font-size: 12px; }
+
+    pre {
+      margin: 0;
+      padding: 16px 18px;
+      overflow: auto;
+      background: var(--code-bg);
+      color: var(--code-fg);
+      border-radius: 14px;
+      font: 13.5px/1.55 "IBM Plex Mono", ui-monospace, monospace;
+    }
+    .code-block {
+      position: relative;
+      margin: 12px 0 18px;
+    }
+    .copy {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      height: 32px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      cursor: pointer;
+      font: 500 12px Sora, sans-serif;
+    }
+    .copy:hover { background: rgba(255,255,255,0.18); }
+    code.inline {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.86em;
+      background: color-mix(in srgb, var(--cyan) 12%, transparent);
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+
+    .note {
+      border-left: 3px solid var(--health);
+      padding: 12px 14px;
+      background: color-mix(in srgb, var(--health) 8%, var(--card));
+      border-radius: 0 12px 12px 0;
+      margin: 16px 0;
+    }
+    .warn {
+      border-left-color: #D97706;
+      background: color-mix(in srgb, #D97706 10%, var(--card));
+    }
+
+    .video-wrap {
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #07101c;
+      box-shadow: var(--shadow);
+      aspect-ratio: 16 / 9;
+    }
+    .video-wrap video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #07101c;
+    }
+    .badge-link {
+      text-decoration: none;
+      color: #fff;
+      background: var(--medical);
+      border-color: var(--medical);
+    }
+    .badge-link:hover { background: var(--cyan); border-color: var(--cyan); color: #fff; }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    mark {
+      background: #FDE68A;
+      color: #0B3140;
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 880px) {
+      .shell { grid-template-columns: 1fr; }
+      .toc { display: none; }
+      .arch { grid-template-columns: 1fr; }
+      h1 { max-width: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+
+    @media print {
+      .topbar, .toc, .copy, .icon-btn { display: none !important; }
+      .shell { display: block; }
+      body { background: #fff; color: #111; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand ui" href="#inicio">
+      <svg class="mark" viewBox="0 0 34 34" aria-hidden="true">
+        <rect width="34" height="34" rx="10" fill="#0077B6"/>
+        <path d="M10 24c2.2-7 5-12 7-16 2 4 4.8 9 7 16" fill="none" stroke="#ECFEFF" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="17" cy="8" r="2.1" fill="#22D3EE"/>
+      </svg>
+      Kinesiología Lerena
+    </a>
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#0891B2" stroke-width="2"/>
+        <path d="M20 20l-3.2-3.2" stroke="#0891B2" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input id="q" type="search" placeholder="Buscar en la documentación" aria-label="Buscar en la documentación">
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="theme" type="button" aria-label="Cambiar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.2 6.2 4.8 4.8M19.2 19.2l-1.4-1.4M17.8 6.2l1.4-1.4M6.2 17.8 4.8 19.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <p class="kicker"><i></i> Práctica profesionalizante · Consultorio real</p>
+    <h1>Sistema de gestión para el consultorio.</h1>
+    <p class="lede">Aplicación de escritorio Windows para administrar pacientes, turnos, agenda y evoluciones clínicas de kinesiología. Pensada para recepción, kinesiólogos y administración, con PostgreSQL en la nube y un modo offline para desarrollo.</p>
+    <div class="hero-meta">
+      <span class="badge">C# · .NET 8 · WinForms</span>
+      <span class="badge">PostgreSQL · Neon</span>
+      <span class="badge">Dapper · Npgsql</span>
+      <span class="badge">BCrypt</span>
+      <a class="badge badge-link" href="#video">Ver video de explicación</a>
+    </div>
+  </section>
+
+  <div class="shell">
+    <nav class="toc ui" aria-label="Contenido">
+      <a href="#video">Video</a>
+      <a href="#sistema">El sistema</a>
+      <a href="#modulos">Pantallas</a>
+      <a href="#roles">Roles</a>
+      <a href="#flujos">Flujos</a>
+      <a href="#arquitectura">Arquitectura</a>
+      <a href="#datos">Modelo de datos</a>
+      <a href="#stack">Stack</a>
+      <a href="#arranque">Arranque</a>
+    </nav>
+
+    <main class="content">
+      <section id="video" data-search="video explicacion csharp winforms demo cloudinary">
+        <h2>Video de explicación</h2>
+        <p>Recorrido del sistema en C# / Windows Forms: login, pacientes, turnos, agenda y consulta activa.</p>
+        <div class="video-wrap">
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/dashboard_itbkdx.jpg"
+            title="Video de explicación del sistema Kinesiología Lerena">
+            <source src="https://res.cloudinary.com/dmt7nidfb/video/upload/v1793141024/kinesiologia-lerena/kine-lerena_xtfpas.mp4" type="video/mp4">
+            Tu navegador no reproduce este video.
+          </video>
+        </div>
+      </section>
+
+      <section id="sistema" data-search="consultorio pacientes turnos evoluciones neon windows login kine system">
+        <h2>Qué resuelve</h2>
+        <p>El consultorio necesita ver el día, ubicar un paciente, atender un turno y dejar registrada la sesión. El sistema concentra esas tareas en una sola ventana principal, con menú lateral y pantallas incrustadas en un panel.</p>
+        <p class="muted">Si no hay <code class="inline">appsettings.json</code> con conexión, arranca con repositorios en memoria (un paciente demo). Con Neon configurado, trabaja contra la base real.</p>
+        <article class="card screen" id="login">
+          <div class="screen-h">
+            <h3>Login</h3>
+            <p>Primera pantalla. Valida usuario y clave (BCrypt). Cancelar o cerrar termina la app.</p>
+          </div>
+          <button class="shot compact" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/login_bgffud.jpg" aria-label="Ampliar captura de Login">
+            <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/login_bgffud.jpg" alt="Pantalla Login de Kine System, con campos Usuario y Contraseña">
+          </button>
+        </article>
+      </section>
+
+      <section id="modulos" data-search="dashboard pacientes ficha atender agenda turnos configuracion login consulta">
+        <h2>Pantallas</h2>
+        <p>Cada captura es una pantalla distinta del escritorio. Clic para ampliar.</p>
+        <nav class="jump ui" aria-label="Ir a una pantalla">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#pacientes">Pacientes</a>
+          <a href="#ficha">Ficha</a>
+          <a href="#consulta">Consulta</a>
+          <a href="#turnos">Turnos</a>
+          <a href="#agenda">Agenda</a>
+          <a href="#configuracion">Configuración</a>
+        </nav>
+
+        <div class="modules">
+          <article class="card screen" id="dashboard">
+            <div class="screen-h">
+              <h3>Dashboard</h3>
+              <p>Turnos del día, contador de atendidos, próximo turno, Ver detalles y Marcar como llegado.</p>
+            </div>
+            <button class="shot" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/dashboard_itbkdx.jpg" aria-label="Ampliar captura del Dashboard">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/dashboard_itbkdx.jpg" alt="Dashboard con la grilla de turnos del día, Valentina Suárez a las 08:00">
+            </button>
+          </article>
+
+          <article class="card screen" id="pacientes">
+            <div class="screen-h">
+              <h3>Pacientes</h3>
+              <p>Listado con búsqueda en vivo por nombre, apellido o DNI. Ver Detalle abre la ficha. Atender Paciente abre consulta sin turno.</p>
+            </div>
+            <button class="shot" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/pacientes_bkdwl9.jpg" aria-label="Ampliar captura de Pacientes">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/pacientes_bkdwl9.jpg" alt="Listado de pacientes con DNI, nombre, edad, cobertura y observaciones">
+            </button>
+          </article>
+
+          <article class="card screen" id="ficha">
+            <div class="screen-h">
+              <h3>Ficha del paciente</h3>
+              <p>Modal demográfico: dirección, teléfonos, email, obra social, plan y observaciones. Sin historial de evoluciones. Ir a Consulta abre la atención.</p>
+            </div>
+            <button class="shot compact" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/ficha-paciente_l0evgm.jpg" aria-label="Ampliar captura de la ficha">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/ficha-paciente_l0evgm.jpg" alt="Ficha de Pedro Acosta, activo, con datos personales y cobertura IOMA">
+            </button>
+          </article>
+
+          <article class="card screen" id="consulta">
+            <div class="screen-h">
+              <h3>Consulta activa</h3>
+              <p>Historial a la izquierda. A la derecha: EVA 0–10, técnicas (magnetoterapia, ultrasonido, terapia manual, ejercicio) y notas. Guardar exige comentario.</p>
+            </div>
+            <button class="shot" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/consulta-activa_bbsi04.jpg" aria-label="Ampliar captura de Consulta activa">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/consulta-activa_bbsi04.jpg" alt="Consulta activa de Pedro Acosta, sin sesiones previas, formulario de evolución">
+            </button>
+          </article>
+
+          <article class="card screen" id="turnos">
+            <div class="screen-h">
+              <h3>Turnos</h3>
+              <p>Filtro por fechas, profesional, estado y paciente. Grilla de fecha, hora, cobertura, diagnóstico y estado.</p>
+            </div>
+            <button class="shot" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/turnos_bx2gkk.jpg" aria-label="Ampliar captura de Turnos">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140260/kinesiologia-lerena/turnos_bx2gkk.jpg" alt="Gestión y búsqueda de turnos, 176 resultados, estados Pendiente">
+            </button>
+          </article>
+
+          <article class="card screen" id="agenda">
+            <div class="screen-h">
+              <h3>Agenda</h3>
+              <p>Vistas día, semana y mes. Color por profesional. Calendario a la izquierda y grilla horaria a la derecha.</p>
+            </div>
+            <button class="shot" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/agenda_fmn86v.jpg" aria-label="Ampliar captura de Agenda">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/agenda_fmn86v.jpg" alt="Agenda semanal con bloques de color por profesional">
+            </button>
+          </article>
+
+          <article class="card screen" id="configuracion">
+            <div class="screen-h">
+              <h3>Configuración</h3>
+              <p>Solo admin. Alta, foto/clave, permisos y baja lógica de usuarios. Recepción y kinesiólogos no ven este menú.</p>
+            </div>
+            <button class="shot" type="button" data-full="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/configuracion_zgmqgy.jpg" aria-label="Ampliar captura de Configuración">
+              <img src="https://res.cloudinary.com/dmt7nidfb/image/upload/v1793140259/kinesiologia-lerena/configuracion_zgmqgy.jpg" alt="Administración de usuarios: admin, atorres, jperez, martin, mlopez y recepcion">
+            </button>
+          </article>
+        </div>
+      </section>
+
+      <section id="roles" data-search="admin kinesiologo recepcion permisos sesion profesional">
+        <h2>Roles</h2>
+        <p>El login valida usuario y clave (BCrypt). El kinesiólogo queda ligado a un profesional; admin y recepción no.</p>
+        <table>
+          <thead>
+            <tr><th>Rol</th><th>Ve</th><th>Restricción</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>admin</td>
+              <td>Todo el consultorio y Configuración</td>
+              <td>Alta y baja de usuarios</td>
+            </tr>
+            <tr>
+              <td>recepcion</td>
+              <td>Dashboard, pacientes, turnos y agenda de todos</td>
+              <td>Sin Configuración</td>
+            </tr>
+            <tr>
+              <td>kinesiologo</td>
+              <td>Sus turnos; historial completo del paciente</td>
+              <td>La evolución se firma con su nombre e id</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="muted">Usuarios de práctica en <code class="inline">sql/005_seed_usuarios.sql</code> y admin en <code class="inline">sql/006_usuario_nombre_foto.sql</code>. Clave compartida de desarrollo: no usar fuera de la práctica.</p>
+      </section>
+
+      <section id="flujos" data-search="atender presente evolucion ficha detalle turnoId null">
+        <h2>Flujos de trabajo</h2>
+        <h3>Atender un turno del día</h3>
+        <div class="flow">
+          <div class="step"><div class="step-n">1</div><div><strong>Entrar</strong> con usuario y clave. Se abre el Dashboard.</div></div>
+          <div class="step"><div class="step-n">2</div><div><strong>Marcar llegada</strong> cuando el paciente está en sala.</div></div>
+          <div class="step"><div class="step-n">3</div><div><strong>Atender</strong> abre la consulta con el <code class="inline">turnoId</code>. Al guardar, el turno pasa a Atendido.</div></div>
+          <div class="step"><div class="step-n">4</div><div><strong>Registrar</strong> EVA, técnicas y comentarios. El kinesiólogo logueado firma la sesión.</div></div>
+        </div>
+        <h3>Consultar un paciente sin turno</h3>
+        <p>Pacientes → buscar → doble clic o Ver detalle (ficha demográfica y cobertura, sin historial) → Atender abre consulta con <code class="inline">turnoId = null</code>. Es una evolución suelta. Abrir la consulta reemplaza el listado en el panel.</p>
+        <div class="note">Estados de turno: Pendiente, Presente, Atendido (tiene evolución), Ausente. El dashboard y Turnos usan ese cálculo, no un campo suelto.</div>
+      </section>
+
+      <section id="arquitectura" data-search="repositorio dapper principal panel memory npgsql sesion">
+        <h2>Arquitectura</h2>
+        <p>WinForms con repositorios por entidad. La ventana <code class="inline">Principal</code> inyecta las implementaciones y embebe cada pantalla con <code class="inline">AbrirFormularioEnPanel</code>.</p>
+        <div class="arch">
+          <article class="card"><h3>UI</h3><p>LogIn, Principal, Dashboard, Pacientes, Turnos, Agenda, Consulta, Configuración</p><small>Pantallas/</small></article>
+          <article class="card"><h3>Contratos</h3><p>IPaciente, ITurno, IEvolucion, IUsuario, IAuth</p><small>interfaces</small></article>
+          <article class="card"><h3>Datos</h3><p>Npgsql* contra Neon, o Memory* si no hay connection string</p><small>Dapper</small></article>
+        </div>
+        <h3>Decoradores de sesión</h3>
+        <p>Si el rol es kinesiólogo, <code class="inline">TurnoRepositoryPorSesion</code> filtra sus turnos y <code class="inline">EvolucionRepositoryPorSesion</code> firma cada evolución nueva. El historial del paciente sigue siendo de toda la clínica.</p>
+      </section>
+
+      <section id="datos" data-search="paciente turno evolucion orden obrasocial profesional usuario sql">
+        <h2>Modelo de datos</h2>
+        <p>PostgreSQL. Scripts en <code class="inline">sql/</code>, en este orden: tablas, seed, turnos, usuarios, nombre/foto.</p>
+        <table>
+          <thead>
+            <tr><th>Tabla</th><th>Para qué</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>profesional</td><td>Kinesiólogos, color de agenda, activo</td></tr>
+            <tr><td>obrasocial</td><td>Cobertura; el listado muestra Particular si no hay OS</td></tr>
+            <tr><td>paciente</td><td>Documento, contacto, sexo, fecha de nacimiento, afiliado y plan</td></tr>
+            <tr><td>orden</td><td>Orden médica, sesiones, diagnóstico, importe</td></tr>
+            <tr><td>turno</td><td>Fecha, hora, presente/ausente, profesional que atiende</td></tr>
+            <tr><td>evolucion</td><td>EVA, técnicas, comentarios; opcionalmente ligada a un turno</td></tr>
+            <tr><td>usuario</td><td>Login, rol, hash, nombre, foto; kinesiólogo exige fk_profesional</td></tr>
+          </tbody>
+        </table>
+        <div class="code-block">
+          <button class="copy" type="button" data-copy>Copiar</button>
+          <pre>paciente 1—N orden 1—N turno
+paciente 1—N evolucion
+turno  0—1 evolucion
+profesional 1—N turno
+usuario → profesional (solo kinesiologo)</pre>
+        </div>
+      </section>
+
+      <section id="stack" data-search="net windows forms neon bcrypt appsettings">
+        <h2>Stack técnico</h2>
+        <table>
+          <thead>
+            <tr><th>Capa</th><th>Elección</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Cliente</td><td>.NET 8, Windows Forms, Segoe UI</td></tr>
+            <tr><td>Persistencia</td><td>PostgreSQL (Neon), Dapper, Npgsql 8</td></tr>
+            <tr><td>Auth</td><td>BCrypt.Net-Next; usuario case-insensitive</td></tr>
+            <tr><td>Config</td><td><code class="inline">appsettings.json</code> con connection string Kinesiologia</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="arranque" data-search="appsettings neon sql seed offline compilacion">
+        <h2>Cómo arrancarlo</h2>
+        <ol class="ui" style="padding-left:18px">
+          <li>Copiar <code class="inline">appsettings.example.json</code> a <code class="inline">appsettings.json</code> y completar Neon, o dejarlo sin archivo para modo memoria.</li>
+          <li>Correr los scripts <code class="inline">sql/001</code> a <code class="inline">sql/006</code> en ese orden.</li>
+          <li>Abrir <code class="inline">TESTSOLAPAS.slnx</code> y ejecutar.</li>
+        </ol>
+        <div class="code-block">
+          <button class="copy" type="button" data-copy>Copiar</button>
+          <pre>"ConnectionStrings": {
+  "Kinesiologia": "Host=...neon.tech;Database=kinesiologia;SSL Mode=Require;..."
+}</pre>
+        </div>
+        <div class="note warn">Sin conexión, Pacientes muestra un único paciente demo. El listado completo aparece solo con la base sembrada.</div>
+      </section>
+    </main>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <img alt="">
+  </div>
+
+  <footer>
+    Documentación del sistema Kinesiología Lerena. Diseño según criterios de
+    <a href="https://uupm.cc/#how-it-works">UI/UX Pro Max</a>
+    (clínica médica + base de conocimiento: paleta cian/verde, TOC fijo, búsqueda, contraste y movimiento reducido).
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const saved = localStorage.getItem("kl-theme");
+    if (saved) root.setAttribute("data-theme", saved);
+    document.getElementById("theme").addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      if (next === "light") root.removeAttribute("data-theme");
+      else root.setAttribute("data-theme", "dark");
+      localStorage.setItem("kl-theme", root.getAttribute("data-theme") || "light");
+    });
+
+    const sections = [...document.querySelectorAll("main section")];
+    const tocLinks = [...document.querySelectorAll(".toc a")];
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        tocLinks.forEach((a) => a.classList.toggle("is-active", a.getAttribute("href") === "#" + e.target.id));
+      });
+    }, { rootMargin: "-20% 0px -65% 0px" });
+    sections.forEach((s) => spy.observe(s));
+
+    const q = document.getElementById("q");
+    q.addEventListener("input", () => {
+      const term = q.value.trim().toLowerCase();
+      sections.forEach((s) => {
+        const hay = (s.innerText + " " + (s.dataset.search || "")).toLowerCase();
+        s.classList.toggle("hidden", term.length > 1 && !hay.includes(term));
+      });
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== q) {
+        e.preventDefault();
+        q.focus();
+      }
+    });
+
+    document.querySelectorAll("[data-copy]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const text = btn.parentElement.querySelector("pre").innerText;
+        await navigator.clipboard.writeText(text);
+        btn.textContent = "Copiado";
+        setTimeout(() => btn.textContent = "Copiar", 1200);
+      });
+    });
+
+    const box = document.getElementById("lightbox");
+    const boxImg = box.querySelector("img");
+    const closeBox = () => {
+      box.classList.remove("is-open");
+      box.hidden = true;
+    };
+    document.querySelectorAll(".shot").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        boxImg.src = btn.dataset.full;
+        boxImg.alt = btn.querySelector("img").alt;
+        box.hidden = false;
+        box.classList.add("is-open");
+      });
+    });
+    box.addEventListener("click", closeBox);
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeBox();
+    });
+  </script>
+</body>
+</html>

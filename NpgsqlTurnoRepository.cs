@@ -20,9 +20,9 @@ namespace TESTSOLAPAS
                 p.nombre || ' ' || p.apellido AS PacienteNombre,
                 p.documento AS PacienteDni,
                 COALESCE(os.descripcion, 'Particular') AS Cobertura,
-                pr.pk_profesional AS ProfesionalId,
-                pr.nombre AS ProfesionalNombre,
-                COALESCE(pr.color, '#007ACC') AS ProfesionalColor,
+                COALESCE(pr.pk_profesional, 0) AS ProfesionalId,
+                COALESCE(pr.nombre, 'Sin asignar') AS ProfesionalNombre,
+                COALESCE(pr.color, '#6C757D') AS ProfesionalColor,
                 COALESCE(o.diagnostico, t.nota, 'Kinesiología general') AS Diagnostico,
                 COALESCE(t.nota, '') AS Nota,
                 t.presente AS Presente,
@@ -138,6 +138,63 @@ namespace TESTSOLAPAS
                   WHERE pk_turno = @TurnoId",
                 new { Presente = presente, HoraPresente = horaPresente, TurnoId = turnoId }
             );
+        }
+
+        public List<TurnoItem> ObtenerTurnosParaTomar(DateTime? desde, DateTime? hasta, int? profesionalId, string? busqueda, string? estado) =>
+            ObtenerTurnosFiltrados(desde, hasta, profesionalId, busqueda, estado);
+
+        public void AsignarProfesional(int turnoId, int profesionalId)
+        {
+            using var conn = DbConnectionFactory.CreateConnection();
+            conn.Execute(
+                @"UPDATE turno SET atendidopor = @ProfesionalId WHERE pk_turno = @TurnoId",
+                new { TurnoId = turnoId, ProfesionalId = profesionalId }
+            );
+        }
+
+        public int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos)
+        {
+            if (turnos.Count == 0)
+                throw new InvalidOperationException("La orden no tiene turnos para crear.");
+
+            using var conn = DbConnectionFactory.CreateConnection();
+            using var tx = conn.BeginTransaction();
+
+            var ordenId = conn.ExecuteScalar<int>(
+                @"INSERT INTO orden (fk_paciente, medico, sesiones, fecha, diagnostico, sesionesreservadas)
+                  VALUES (@PacienteId, @Medico, @Sesiones, @Fecha, @Diagnostico, @Sesiones)
+                  RETURNING pk_orden",
+                new
+                {
+                    datos.PacienteId,
+                    Medico = string.IsNullOrWhiteSpace(datos.Medico) ? null : datos.Medico.Trim(),
+                    Sesiones = turnos.Count,
+                    Fecha = turnos[0].Fecha.Date,
+                    Diagnostico = string.IsNullOrWhiteSpace(datos.Diagnostico) ? null : datos.Diagnostico.Trim()
+                },
+                tx
+            );
+
+            for (var i = 0; i < turnos.Count; i++)
+            {
+                var turno = turnos[i];
+                conn.Execute(
+                    @"INSERT INTO turno (fecha, turnohora, fk_orden, hora, secuencia, atendidopor)
+                      VALUES (@Fecha, @Hora, @OrdenId, @Hora, @Secuencia, @ProfesionalId)",
+                    new
+                    {
+                        Fecha = turno.Fecha.Date,
+                        Hora = new TimeSpan(datos.Hora.Hours, datos.Hora.Minutes, 0),
+                        OrdenId = ordenId,
+                        Secuencia = i + 1,
+                        turno.ProfesionalId
+                    },
+                    tx
+                );
+            }
+
+            tx.Commit();
+            return ordenId;
         }
     }
 }

@@ -7,13 +7,21 @@ namespace TESTSOLAPAS
     public partial class ConfiguracionForm : Form
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IFranjaRepository? _franjaRepository;
+        private readonly ITurnoRepository? _turnoRepository;
         private readonly int _usuarioActualId;
 
-        public ConfiguracionForm(IUsuarioRepository usuarioRepository, int usuarioActualId)
+        public ConfiguracionForm(
+            IUsuarioRepository usuarioRepository,
+            int usuarioActualId,
+            IFranjaRepository? franjaRepository = null,
+            ITurnoRepository? turnoRepository = null)
         {
             InitializeComponent();
             _usuarioRepository = usuarioRepository;
             _usuarioActualId = usuarioActualId;
+            _franjaRepository = franjaRepository;
+            _turnoRepository = turnoRepository;
 
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
@@ -22,6 +30,31 @@ namespace TESTSOLAPAS
             button1.Click += btnCrearUsuario_Click;
             btnEditarUsuario.Click += btnEditarUsuario_Click;
             button3.Click += btnBajaActivar_Click;
+
+            if (_franjaRepository is not null && _turnoRepository is not null)
+                AgregarBotonFranjas();
+        }
+
+        private void AgregarBotonFranjas()
+        {
+            var boton = new Button
+            {
+                Text = "Franjas",
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                BackColor = Color.FromArgb(0, 122, 204),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Location = new Point(15, 78),
+                Size = new Size(165, 36)
+            };
+            boton.FlatAppearance.BorderSize = 0;
+            boton.Click += (_, _) =>
+            {
+                using var dlg = new FranjasDialog(_franjaRepository!, _turnoRepository!.ObtenerProfesionales());
+                dlg.ShowDialog(this);
+            };
+            groupBox2.Height = 130;
+            groupBox2.Controls.Add(boton);
         }
 
         private void Form1_Load(object sender, EventArgs e)

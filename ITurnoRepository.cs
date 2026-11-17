@@ -22,5 +22,17 @@ namespace TESTSOLAPAS
 
         /// <summary>Marca o desmarca un turno como presente (paciente en sala de espera).</summary>
         void MarcarPresente(int turnoId, bool presente);
+
+        /// <summary>
+        /// Igual que ObtenerTurnosFiltrados, sin el recorte por kinesiólogo de la sesión.
+        /// Turnos lo usa para que un suplente vea turnos de otros y se los asigne.
+        /// </summary>
+        List<TurnoItem> ObtenerTurnosParaTomar(DateTime? desde, DateTime? hasta, int? profesionalId, string? busqueda, string? estado);
+
+        /// <summary>Pasa el turno a otro kinesiólogo. No cambia la grilla fija.</summary>
+        void AsignarProfesional(int turnoId, int profesionalId);
+
+        /// <summary>Crea la orden y un turno por cada fecha ya resuelta. No reescribe turnos viejos.</summary>
+        int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos);
     }
 }

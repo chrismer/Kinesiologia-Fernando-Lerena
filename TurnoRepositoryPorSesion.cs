@@ -5,9 +5,10 @@ using System.Linq;
 namespace TESTSOLAPAS
 {
     /// <summary>
-    /// Envuelve otro ITurnoRepository y deja ver solo los turnos de un profesional.
-    /// Principal lo usa cuando entra un kinesiólogo; admin y recepción ven todo.
-    /// Las pantallas no cambian: el filtro se aplica acá aunque elijan "Todos".
+    /// Envuelve otro ITurnoRepository.
+    /// El Dashboard sigue viendo solo los turnos del kinesiólogo logueado.
+    /// ObtenerTurnosParaTomar no filtra: en Turnos puede ver los de otros y asignárselos.
+    /// AsignarProfesional solo acepta su propio id.
     /// </summary>
     public class TurnoRepositoryPorSesion : ITurnoRepository
     {
@@ -38,5 +39,19 @@ namespace TESTSOLAPAS
 
         public void MarcarPresente(int turnoId, bool presente) =>
             _inner.MarcarPresente(turnoId, presente);
+
+        public List<TurnoItem> ObtenerTurnosParaTomar(DateTime? desde, DateTime? hasta, int? profesionalId, string? busqueda, string? estado) =>
+            _inner.ObtenerTurnosParaTomar(desde, hasta, profesionalId, busqueda, estado);
+
+        public void AsignarProfesional(int turnoId, int profesionalId)
+        {
+            if (profesionalId != _profesionalId)
+                throw new InvalidOperationException("Un kinesiólogo solo puede asignarse el turno a sí mismo.");
+
+            _inner.AsignarProfesional(turnoId, profesionalId);
+        }
+
+        public int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos) =>
+            _inner.CrearOrdenConTurnos(datos, turnos);
     }
 }

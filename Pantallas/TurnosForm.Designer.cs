@@ -31,11 +31,17 @@ namespace TESTSOLAPAS
             txtBuscar = new System.Windows.Forms.TextBox();
             btnFiltrar = new System.Windows.Forms.Button();
             btnLimpiar = new System.Windows.Forms.Button();
+            lblFranja = new System.Windows.Forms.Label();
+            cmbFranja = new System.Windows.Forms.ComboBox();
 
             panelBotones = new System.Windows.Forms.Panel();
             lblTotalResultados = new System.Windows.Forms.Label();
             btnMarcarLlegado = new System.Windows.Forms.Button();
             btnAtender = new System.Windows.Forms.Button();
+            btnNuevaOrden = new System.Windows.Forms.Button();
+            btnAsignarme = new System.Windows.Forms.Button();
+            cmbAsignarA = new System.Windows.Forms.ComboBox();
+            btnAsignar = new System.Windows.Forms.Button();
 
             dgvTurnos = new System.Windows.Forms.DataGridView();
             colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,7 +62,7 @@ namespace TESTSOLAPAS
             // ── panelFiltros ──────────────────────────────────────────
             panelFiltros.BackColor = System.Drawing.Color.FromArgb(0, 0, 64);
             panelFiltros.Dock = System.Windows.Forms.DockStyle.Top;
-            panelFiltros.Height = 110;
+            panelFiltros.Height = 118;
             panelFiltros.Padding = new System.Windows.Forms.Padding(15, 10, 15, 10);
             panelFiltros.Controls.Add(lblTitulo);
             panelFiltros.Controls.Add(lblDesde);
@@ -71,6 +77,8 @@ namespace TESTSOLAPAS
             panelFiltros.Controls.Add(txtBuscar);
             panelFiltros.Controls.Add(btnFiltrar);
             panelFiltros.Controls.Add(btnLimpiar);
+            panelFiltros.Controls.Add(lblFranja);
+            panelFiltros.Controls.Add(cmbFranja);
 
             // lblTitulo
             lblTitulo.Text = "Gestión y Búsqueda de Turnos";
@@ -159,19 +167,33 @@ namespace TESTSOLAPAS
             btnLimpiar.Size = new System.Drawing.Size(85, 26);
             btnLimpiar.Cursor = System.Windows.Forms.Cursors.Hand;
 
+            lblFranja.Text = "Franja:";
+            lblFranja.ForeColor = System.Drawing.Color.LightGray;
+            lblFranja.Font = new System.Drawing.Font("Segoe UI", 9F);
+            lblFranja.Location = new System.Drawing.Point(515, 80);
+            lblFranja.AutoSize = true;
+
+            cmbFranja.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbFranja.Location = new System.Drawing.Point(565, 76);
+            cmbFranja.Width = 130;
+
             // ── panelBotones (Inferior) ───────────────────────────────
             panelBotones.BackColor = System.Drawing.SystemColors.ControlLight;
             panelBotones.Dock = System.Windows.Forms.DockStyle.Bottom;
-            panelBotones.Height = 55;
+            panelBotones.Height = 96;
             panelBotones.Padding = new System.Windows.Forms.Padding(15, 10, 15, 10);
             panelBotones.Controls.Add(lblTotalResultados);
             panelBotones.Controls.Add(btnMarcarLlegado);
             panelBotones.Controls.Add(btnAtender);
+            panelBotones.Controls.Add(btnNuevaOrden);
+            panelBotones.Controls.Add(btnAsignarme);
+            panelBotones.Controls.Add(cmbAsignarA);
+            panelBotones.Controls.Add(btnAsignar);
 
             lblTotalResultados.Text = "0 turnos encontrados";
             lblTotalResultados.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             lblTotalResultados.ForeColor = System.Drawing.Color.FromArgb(0, 0, 64);
-            lblTotalResultados.Location = new System.Drawing.Point(15, 18);
+            lblTotalResultados.Location = new System.Drawing.Point(15, 62);
             lblTotalResultados.AutoSize = true;
 
             btnMarcarLlegado.Text = "Marcar Llegado";
@@ -181,7 +203,7 @@ namespace TESTSOLAPAS
             btnMarcarLlegado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnMarcarLlegado.FlatAppearance.BorderSize = 0;
             btnMarcarLlegado.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            btnMarcarLlegado.Location = new System.Drawing.Point(620, 10);
+            btnMarcarLlegado.Location = new System.Drawing.Point(620, 52);
             btnMarcarLlegado.Size = new System.Drawing.Size(160, 35);
             btnMarcarLlegado.Cursor = System.Windows.Forms.Cursors.Hand;
 
@@ -192,9 +214,43 @@ namespace TESTSOLAPAS
             btnAtender.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnAtender.FlatAppearance.BorderSize = 0;
             btnAtender.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            btnAtender.Location = new System.Drawing.Point(790, 10);
+            btnAtender.Location = new System.Drawing.Point(790, 52);
             btnAtender.Size = new System.Drawing.Size(170, 35);
             btnAtender.Cursor = System.Windows.Forms.Cursors.Hand;
+
+            btnNuevaOrden.Text = "Nueva orden";
+            btnNuevaOrden.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            btnNuevaOrden.BackColor = System.Drawing.Color.FromArgb(0, 0, 64);
+            btnNuevaOrden.ForeColor = System.Drawing.Color.White;
+            btnNuevaOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnNuevaOrden.FlatAppearance.BorderSize = 0;
+            btnNuevaOrden.Location = new System.Drawing.Point(15, 10);
+            btnNuevaOrden.Size = new System.Drawing.Size(120, 32);
+            btnNuevaOrden.Cursor = System.Windows.Forms.Cursors.Hand;
+
+            btnAsignarme.Text = "Asignarme";
+            btnAsignarme.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            btnAsignarme.BackColor = System.Drawing.Color.FromArgb(40, 167, 69);
+            btnAsignarme.ForeColor = System.Drawing.Color.White;
+            btnAsignarme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnAsignarme.FlatAppearance.BorderSize = 0;
+            btnAsignarme.Location = new System.Drawing.Point(145, 10);
+            btnAsignarme.Size = new System.Drawing.Size(110, 32);
+            btnAsignarme.Cursor = System.Windows.Forms.Cursors.Hand;
+
+            cmbAsignarA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbAsignarA.Location = new System.Drawing.Point(265, 14);
+            cmbAsignarA.Width = 180;
+
+            btnAsignar.Text = "Asignar";
+            btnAsignar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            btnAsignar.BackColor = System.Drawing.Color.FromArgb(0, 122, 204);
+            btnAsignar.ForeColor = System.Drawing.Color.White;
+            btnAsignar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnAsignar.FlatAppearance.BorderSize = 0;
+            btnAsignar.Location = new System.Drawing.Point(455, 10);
+            btnAsignar.Size = new System.Drawing.Size(90, 32);
+            btnAsignar.Cursor = System.Windows.Forms.Cursors.Hand;
 
             // ── dgvTurnos ─────────────────────────────────────────────
             dgvTurnos.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -273,11 +329,17 @@ namespace TESTSOLAPAS
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Button btnFiltrar;
         private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Label lblFranja;
+        private System.Windows.Forms.ComboBox cmbFranja;
 
         private System.Windows.Forms.Panel panelBotones;
         private System.Windows.Forms.Label lblTotalResultados;
         private System.Windows.Forms.Button btnMarcarLlegado;
         private System.Windows.Forms.Button btnAtender;
+        private System.Windows.Forms.Button btnNuevaOrden;
+        private System.Windows.Forms.Button btnAsignarme;
+        private System.Windows.Forms.ComboBox cmbAsignarA;
+        private System.Windows.Forms.Button btnAsignar;
 
         private System.Windows.Forms.DataGridView dgvTurnos;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;

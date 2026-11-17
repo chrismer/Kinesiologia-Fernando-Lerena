@@ -113,5 +113,50 @@ namespace TESTSOLAPAS
                 }
             }
         }
+
+        public List<TurnoItem> ObtenerTurnosParaTomar(DateTime? desde, DateTime? hasta, int? profesionalId, string? busqueda, string? estado) =>
+            ObtenerTurnosFiltrados(desde, hasta, profesionalId, busqueda, estado);
+
+        public void AsignarProfesional(int turnoId, int profesionalId)
+        {
+            var turno = _turnos.FirstOrDefault(t => t.Id == turnoId);
+            var prof = _profesionales.FirstOrDefault(p => p.Id == profesionalId);
+            if (turno is null || prof is null)
+                return;
+
+            turno.ProfesionalId = prof.Id;
+            turno.ProfesionalNombre = prof.Nombre;
+            turno.ProfesionalColor = prof.Color;
+        }
+
+        public int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos)
+        {
+            if (turnos.Count == 0)
+                throw new InvalidOperationException("La orden no tiene turnos para crear.");
+
+            var siguiente = _turnos.Count == 0 ? 1 : _turnos.Max(t => t.Id) + 1;
+            var hora = new TimeSpan(datos.Hora.Hours, datos.Hora.Minutes, 0);
+
+            foreach (var generado in turnos)
+            {
+                _turnos.Add(new TurnoItem
+                {
+                    Id = siguiente++,
+                    Fecha = generado.Fecha.Date,
+                    Hora = hora,
+                    PacienteId = datos.PacienteId,
+                    PacienteNombre = datos.PacienteNombre,
+                    PacienteDni = datos.PacienteDni,
+                    Cobertura = datos.Cobertura,
+                    ProfesionalId = generado.ProfesionalId ?? 0,
+                    ProfesionalNombre = generado.ProfesionalNombre,
+                    ProfesionalColor = generado.ProfesionalColor,
+                    Diagnostico = datos.Diagnostico,
+                    Estado = "Pendiente"
+                });
+            }
+
+            return siguiente;
+        }
     }
 }

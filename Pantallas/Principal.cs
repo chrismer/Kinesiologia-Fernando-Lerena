@@ -14,6 +14,7 @@ namespace TESTSOLAPAS
         private readonly IEvolucionRepository _evolucionRepository;
         private readonly IPacienteRepository _pacienteRepository;
         private readonly ITurnoRepository _turnoRepository;
+        private readonly IFranjaRepository _franjaRepository;
         private readonly IUsuarioRepository _usuarioRepository;
 
         public Principal()
@@ -25,6 +26,7 @@ namespace TESTSOLAPAS
                 _evolucionRepository = new NpgsqlEvolucionRepository();
                 _pacienteRepository  = new NpgsqlPacienteRepository();
                 _turnoRepository     = new NpgsqlTurnoRepository();
+                _franjaRepository    = new NpgsqlFranjaRepository();
                 _usuarioRepository   = new NpgsqlUsuarioRepository();
             }
             else
@@ -33,6 +35,7 @@ namespace TESTSOLAPAS
                 _evolucionRepository = memRepo;
                 _pacienteRepository  = new MemoryPacienteRepository(memRepo.ObtenerPacienteDemo());
                 _turnoRepository     = new MemoryTurnoRepository();
+                _franjaRepository    = new MemoryFranjaRepository();
                 _usuarioRepository   = new MemoryAuthRepository();
             }
         }
@@ -62,7 +65,8 @@ namespace TESTSOLAPAS
             // Configuración (alta y baja de usuarios) es solo para admin.
             btnConfig.Visible = sesion.Rol == "admin";
 
-            // Un kinesiólogo ve solo sus turnos y firma sus evoluciones.
+            // En el Dashboard un kinesiólogo ve solo sus turnos.
+            // En Turnos ve todos, para poder asignarse uno de otra franja.
             // Admin y recepción siguen viendo los turnos de todos.
             if (sesion.Rol == "kinesiologo" && sesion.ProfesionalId.HasValue)
             {
@@ -143,7 +147,8 @@ namespace TESTSOLAPAS
         private void btnTurnos_Click(object sender, EventArgs e)
         {
             MarcarBotonActivo(btnTurnos);
-            AbrirFormularioEnPanel(new TurnosForm(_turnoRepository, _pacienteRepository, _evolucionRepository, AbrirFormularioEnPanel));
+            AbrirFormularioEnPanel(new TurnosForm(
+                _turnoRepository, _pacienteRepository, _evolucionRepository, AbrirFormularioEnPanel, _franjaRepository, Sesion));
         }
 
         private void btnAgenda_Click(object sender, EventArgs e)
@@ -158,7 +163,7 @@ namespace TESTSOLAPAS
                 return;
 
             MarcarBotonActivo(btnConfig);
-            AbrirFormularioEnPanel(new ConfiguracionForm(_usuarioRepository, sesion.UsuarioId));
+            AbrirFormularioEnPanel(new ConfiguracionForm(_usuarioRepository, sesion.UsuarioId, _franjaRepository, _turnoRepository));
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)

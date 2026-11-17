@@ -11,24 +11,32 @@ namespace TESTSOLAPAS
         private readonly ITurnoRepository _turnoRepository;
         private readonly IPacienteRepository _pacienteRepository;
         private readonly IEvolucionRepository _evolucionRepository;
+        private readonly IFranjaRepository _franjaRepository;
         private readonly Action<Form>? _abrirEnPanel;
+        private readonly SesionActual? _sesion;
 
         private List<TurnoItem> _turnosActuales = new();
+        private List<FranjaItem> _franjas = new();
 
         public TurnosForm(
             ITurnoRepository? turnoRepository = null,
             IPacienteRepository? pacienteRepository = null,
             IEvolucionRepository? evolucionRepository = null,
-            Action<Form>? abrirEnPanel = null)
+            Action<Form>? abrirEnPanel = null,
+            IFranjaRepository? franjaRepository = null,
+            SesionActual? sesion = null)
         {
             InitializeComponent();
 
             _turnoRepository     = turnoRepository     ?? new MemoryTurnoRepository();
             _pacienteRepository  = pacienteRepository  ?? new MemoryPacienteRepository(new Paciente { Id = 1, NombreCompleto = "María Gómez Blanía", Dni = "12378738" });
             _evolucionRepository = evolucionRepository ?? new MemoryEvolucionRepository();
+            _franjaRepository    = franjaRepository    ?? new MemoryFranjaRepository();
             _abrirEnPanel        = abrirEnPanel;
+            _sesion              = sesion;
 
             ConfigurarEventos();
+            ConfigurarAsignacion();
         }
 
         private void ConfigurarEventos()
@@ -44,6 +52,38 @@ namespace TESTSOLAPAS
 
             btnMarcarLlegado.Click += BtnMarcarLlegado_Click;
             btnAtender.Click += (s, e) => AtenderTurnoSeleccionado();
+            btnNuevaOrden.Click += (_, _) => AbrirNuevaOrden();
+            btnAsignarme.Click += (_, _) => Asignarme();
+            btnAsignar.Click += (_, _) => AsignarAOtro();
+        }
+
+        private void ConfigurarAsignacion()
+        {
+            var esKine = _sesion is { Rol: "kinesiologo", ProfesionalId: not null };
+            var puedeAsignarAOtros = _sesion is null || _sesion.Rol is "admin" or "recepcion";
+
+            btnAsignarme.Visible = esKine;
+            cmbAsignarA.Visible = puedeAsignarAOtros;
+            btnAsignar.Visible = puedeAsignarAOtros;
+
+            cmbAsignarA.DisplayMember = nameof(ProfesionalItem.Nombre);
+            cmbAsignarA.Items.Clear();
+            if (!puedeAsignarAOtros)
+                return;
+
+            try
+            {
+                foreach (var prof in _turnoRepository.ObtenerProfesionales())
+                    cmbAsignarA.Items.Add(prof);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudieron cargar los kinesiólogos.\n" + ex.Message, "Turnos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (cmbAsignarA.Items.Count > 0)
+                cmbAsignarA.SelectedIndex = 0;
         }
 
         private void TurnosForm_Load(object? sender, EventArgs e)
@@ -60,7 +100,31 @@ namespace TESTSOLAPAS
             cmbEstado.Items.AddRange(new object[] { "Todos", "Pendiente", "Presente", "Atendido", "Ausente" });
             cmbEstado.SelectedIndex = 0;
 
+            CargarComboFranjas();
             EjecutarBusqueda();
+        }
+
+        private void CargarComboFranjas()
+        {
+            cmbFranja.Items.Clear();
+            cmbFranja.Items.Add("Todas");
+            try
+            {
+                _franjas = _franjaRepository.ObtenerFranjas();
+                foreach (var franja in _franjas)
+                    cmbFranja.Items.Add(franja.Nombre);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "No se pudieron leer las franjas. Si usás Neon, corré sql/007_franja.sql.\n" + ex.Message,
+                    "Franjas",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                _franjas = new List<FranjaItem>();
+            }
+
+            cmbFranja.SelectedIndex = 0;
         }
 
         private void CargarComboProfesionales()
@@ -83,6 +147,8 @@ namespace TESTSOLAPAS
             dtpHasta.Value = DateTime.Today.AddDays(14);
             cmbProfesional.SelectedIndex = 0;
             cmbEstado.SelectedIndex = 0;
+            if (cmbFranja.Items.Count > 0)
+                cmbFranja.SelectedIndex = 0;
             txtBuscar.Clear();
             EjecutarBusqueda();
         }
@@ -102,13 +168,20 @@ namespace TESTSOLAPAS
                 string? estado = cmbEstado.SelectedIndex > 0 ? cmbEstado.Text : null;
                 string busqueda = txtBuscar.Text.Trim();
 
-                _turnosActuales = _turnoRepository.ObtenerTurnosFiltrados(
+                _turnosActuales = _turnoRepository.ObtenerTurnosParaTomar(
                     dtpDesde.Value.Date,
                     dtpHasta.Value.Date,
                     profId,
                     busqueda,
                     estado
                 );
+
+                if (cmbFranja.SelectedIndex > 0)
+                {
+                    var franja = _franjas.FirstOrDefault(f => f.Nombre == cmbFranja.Text);
+                    if (franja is not null)
+                        _turnosActuales = _turnosActuales.Where(t => FranjaCalendario.CaeEnFranja(t.Hora, franja)).ToList();
+                }
 
                 PoblarGrilla();
             }
@@ -131,7 +204,7 @@ namespace TESTSOLAPAS
                     turno.PacienteNombre,
                     turno.PacienteDni,
                     turno.Cobertura,
-                    turno.ProfesionalNombre,
+                    string.IsNullOrWhiteSpace(turno.ProfesionalNombre) ? "Sin asignar" : turno.ProfesionalNombre,
                     turno.Diagnostico,
                     turno.Estado
                 );
@@ -225,8 +298,57 @@ namespace TESTSOLAPAS
                 paciente,
                 _evolucionRepository,
                 turno.Id,
-                onVolver: () => _abrirEnPanel(new TurnosForm(_turnoRepository, _pacienteRepository, _evolucionRepository, _abrirEnPanel))
+                onVolver: () => _abrirEnPanel(new TurnosForm(
+                    _turnoRepository, _pacienteRepository, _evolucionRepository, _abrirEnPanel, _franjaRepository, _sesion))
             ));
+        }
+
+        private TurnoItem? TurnoSeleccionado =>
+            dgvTurnos.CurrentRow?.Tag as TurnoItem;
+
+        private void AbrirNuevaOrden()
+        {
+            using var dlg = new NuevaOrdenDialog(_pacienteRepository, _franjaRepository, _turnoRepository);
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+                EjecutarBusqueda();
+        }
+
+        private void Asignarme()
+        {
+            if (_sesion?.ProfesionalId is not int profesionalId)
+                return;
+
+            Asignar(profesionalId);
+        }
+
+        private void AsignarAOtro()
+        {
+            if (cmbAsignarA.SelectedItem is not ProfesionalItem prof)
+            {
+                MessageBox.Show("Elegí un kinesiólogo.", "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Asignar(prof.Id);
+        }
+
+        private void Asignar(int profesionalId)
+        {
+            if (TurnoSeleccionado is not TurnoItem turno)
+            {
+                MessageBox.Show("Seleccioná un turno de la grilla.", "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                _turnoRepository.AsignarProfesional(turno.Id, profesionalId);
+                EjecutarBusqueda();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
