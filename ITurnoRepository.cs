@@ -29,10 +29,7 @@ namespace TESTSOLAPAS
         /// </summary>
         List<TurnoItem> ObtenerTurnosParaTomar(DateTime? desde, DateTime? hasta, int? profesionalId, string? busqueda, string? estado);
 
-        /// <summary>Pasa el turno a otro kinesiólogo. No cambia la grilla fija.</summary>
+        /// <summary>Pasa el turno a otro kinesiólogo. No cambia la grilla fija. No crea turnos.</summary>
         void AsignarProfesional(int turnoId, int profesionalId);
-
-        /// <summary>Crea la orden y un turno por cada fecha ya resuelta. No reescribe turnos viejos.</summary>
-        int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos);
     }
 }

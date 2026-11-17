@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace TESTSOLAPAS
 {
@@ -36,47 +35,8 @@ namespace TESTSOLAPAS
         public string ProfesionalColor { get; set; } = "#6C757D";
     }
 
-    /// <summary>Datos para crear una orden y sus turnos hábiles.</summary>
-    public class NuevaOrdenTurnos
-    {
-        public int PacienteId { get; set; }
-        public string PacienteNombre { get; set; } = string.Empty;
-        public string PacienteDni { get; set; } = string.Empty;
-        public string Cobertura { get; set; } = string.Empty;
-        public string Medico { get; set; } = string.Empty;
-        public string Diagnostico { get; set; } = string.Empty;
-        public TimeSpan Hora { get; set; }
-    }
-
-    /// <summary>Un turno ya resuelto, listo para insertar.</summary>
-    public class TurnoGenerado
-    {
-        public DateTime Fecha { get; set; }
-        public int? ProfesionalId { get; set; }
-        public string ProfesionalNombre { get; set; } = "Sin asignar";
-        public string ProfesionalColor { get; set; } = "#6C757D";
-    }
-
     public static class FranjaCalendario
     {
-        /// <summary>N días de lunes a viernes desde la fecha, inclusive si cae hábil.</summary>
-        public static List<DateTime> DiasHabiles(DateTime inicio, int cantidad)
-        {
-            if (cantidad < 1)
-                throw new ArgumentOutOfRangeException(nameof(cantidad));
-
-            var fechas = new List<DateTime>(cantidad);
-            var dia = inicio.Date;
-            while (fechas.Count < cantidad)
-            {
-                if (dia.DayOfWeek is not (DayOfWeek.Saturday or DayOfWeek.Sunday))
-                    fechas.Add(dia);
-                dia = dia.AddDays(1);
-            }
-
-            return fechas;
-        }
-
         public static bool CaeEnFranja(TimeSpan hora, FranjaItem franja)
         {
             var h = new TimeSpan(hora.Hours, hora.Minutes, 0);

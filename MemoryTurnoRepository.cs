@@ -128,35 +128,5 @@ namespace TESTSOLAPAS
             turno.ProfesionalNombre = prof.Nombre;
             turno.ProfesionalColor = prof.Color;
         }
-
-        public int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos)
-        {
-            if (turnos.Count == 0)
-                throw new InvalidOperationException("La orden no tiene turnos para crear.");
-
-            var siguiente = _turnos.Count == 0 ? 1 : _turnos.Max(t => t.Id) + 1;
-            var hora = new TimeSpan(datos.Hora.Hours, datos.Hora.Minutes, 0);
-
-            foreach (var generado in turnos)
-            {
-                _turnos.Add(new TurnoItem
-                {
-                    Id = siguiente++,
-                    Fecha = generado.Fecha.Date,
-                    Hora = hora,
-                    PacienteId = datos.PacienteId,
-                    PacienteNombre = datos.PacienteNombre,
-                    PacienteDni = datos.PacienteDni,
-                    Cobertura = datos.Cobertura,
-                    ProfesionalId = generado.ProfesionalId ?? 0,
-                    ProfesionalNombre = generado.ProfesionalNombre,
-                    ProfesionalColor = generado.ProfesionalColor,
-                    Diagnostico = datos.Diagnostico,
-                    Estado = "Pendiente"
-                });
-            }
-
-            return siguiente;
-        }
     }
 }

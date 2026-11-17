@@ -52,7 +52,6 @@ namespace TESTSOLAPAS
 
             btnMarcarLlegado.Click += BtnMarcarLlegado_Click;
             btnAtender.Click += (s, e) => AtenderTurnoSeleccionado();
-            btnNuevaOrden.Click += (_, _) => AbrirNuevaOrden();
             btnAsignarme.Click += (_, _) => Asignarme();
             btnAsignar.Click += (_, _) => AsignarAOtro();
         }
@@ -303,16 +302,6 @@ namespace TESTSOLAPAS
             ));
         }
 
-        private TurnoItem? TurnoSeleccionado =>
-            dgvTurnos.CurrentRow?.Tag as TurnoItem;
-
-        private void AbrirNuevaOrden()
-        {
-            using var dlg = new NuevaOrdenDialog(_pacienteRepository, _franjaRepository, _turnoRepository);
-            if (dlg.ShowDialog(this) == DialogResult.OK)
-                EjecutarBusqueda();
-        }
-
         private void Asignarme()
         {
             if (_sesion?.ProfesionalId is not int profesionalId)
@@ -334,20 +323,30 @@ namespace TESTSOLAPAS
 
         private void Asignar(int profesionalId)
         {
-            if (TurnoSeleccionado is not TurnoItem turno)
+            var turnos = dgvTurnos.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(fila => fila.Tag as TurnoItem)
+                .Where(turno => turno is not null)
+                .Cast<TurnoItem>()
+                .ToList();
+
+            if (turnos.Count == 0)
             {
-                MessageBox.Show("Seleccioná un turno de la grilla.", "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccioná uno o varios turnos. Ctrl o Shift suman filas.", "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                _turnoRepository.AsignarProfesional(turno.Id, profesionalId);
+                foreach (var turno in turnos)
+                    _turnoRepository.AsignarProfesional(turno.Id, profesionalId);
                 EjecutarBusqueda();
+                MessageBox.Show($"Se asignaron {turnos.Count} turno(s).", "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Asignar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EjecutarBusqueda();
             }
         }
     }

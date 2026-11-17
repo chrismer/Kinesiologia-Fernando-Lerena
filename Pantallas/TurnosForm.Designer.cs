@@ -38,7 +38,6 @@ namespace TESTSOLAPAS
             lblTotalResultados = new System.Windows.Forms.Label();
             btnMarcarLlegado = new System.Windows.Forms.Button();
             btnAtender = new System.Windows.Forms.Button();
-            btnNuevaOrden = new System.Windows.Forms.Button();
             btnAsignarme = new System.Windows.Forms.Button();
             cmbAsignarA = new System.Windows.Forms.ComboBox();
             btnAsignar = new System.Windows.Forms.Button();
@@ -185,7 +184,6 @@ namespace TESTSOLAPAS
             panelBotones.Controls.Add(lblTotalResultados);
             panelBotones.Controls.Add(btnMarcarLlegado);
             panelBotones.Controls.Add(btnAtender);
-            panelBotones.Controls.Add(btnNuevaOrden);
             panelBotones.Controls.Add(btnAsignarme);
             panelBotones.Controls.Add(cmbAsignarA);
             panelBotones.Controls.Add(btnAsignar);
@@ -218,28 +216,18 @@ namespace TESTSOLAPAS
             btnAtender.Size = new System.Drawing.Size(170, 35);
             btnAtender.Cursor = System.Windows.Forms.Cursors.Hand;
 
-            btnNuevaOrden.Text = "Nueva orden";
-            btnNuevaOrden.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            btnNuevaOrden.BackColor = System.Drawing.Color.FromArgb(0, 0, 64);
-            btnNuevaOrden.ForeColor = System.Drawing.Color.White;
-            btnNuevaOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnNuevaOrden.FlatAppearance.BorderSize = 0;
-            btnNuevaOrden.Location = new System.Drawing.Point(15, 10);
-            btnNuevaOrden.Size = new System.Drawing.Size(120, 32);
-            btnNuevaOrden.Cursor = System.Windows.Forms.Cursors.Hand;
-
             btnAsignarme.Text = "Asignarme";
             btnAsignarme.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             btnAsignarme.BackColor = System.Drawing.Color.FromArgb(40, 167, 69);
             btnAsignarme.ForeColor = System.Drawing.Color.White;
             btnAsignarme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnAsignarme.FlatAppearance.BorderSize = 0;
-            btnAsignarme.Location = new System.Drawing.Point(145, 10);
+            btnAsignarme.Location = new System.Drawing.Point(15, 10);
             btnAsignarme.Size = new System.Drawing.Size(110, 32);
             btnAsignarme.Cursor = System.Windows.Forms.Cursors.Hand;
 
             cmbAsignarA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            cmbAsignarA.Location = new System.Drawing.Point(265, 14);
+            cmbAsignarA.Location = new System.Drawing.Point(135, 14);
             cmbAsignarA.Width = 180;
 
             btnAsignar.Text = "Asignar";
@@ -248,7 +236,7 @@ namespace TESTSOLAPAS
             btnAsignar.ForeColor = System.Drawing.Color.White;
             btnAsignar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnAsignar.FlatAppearance.BorderSize = 0;
-            btnAsignar.Location = new System.Drawing.Point(455, 10);
+            btnAsignar.Location = new System.Drawing.Point(325, 10);
             btnAsignar.Size = new System.Drawing.Size(90, 32);
             btnAsignar.Cursor = System.Windows.Forms.Cursors.Hand;
 
@@ -258,7 +246,7 @@ namespace TESTSOLAPAS
             dgvTurnos.AllowUserToAddRows = false;
             dgvTurnos.AllowUserToDeleteRows = false;
             dgvTurnos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvTurnos.MultiSelect = false;
+            dgvTurnos.MultiSelect = true;
             dgvTurnos.RowHeadersVisible = false;
             dgvTurnos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dgvTurnos.BackgroundColor = System.Drawing.SystemColors.Window;
@@ -336,7 +324,6 @@ namespace TESTSOLAPAS
         private System.Windows.Forms.Label lblTotalResultados;
         private System.Windows.Forms.Button btnMarcarLlegado;
         private System.Windows.Forms.Button btnAtender;
-        private System.Windows.Forms.Button btnNuevaOrden;
         private System.Windows.Forms.Button btnAsignarme;
         private System.Windows.Forms.ComboBox cmbAsignarA;
         private System.Windows.Forms.Button btnAsignar;

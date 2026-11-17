@@ -50,8 +50,5 @@ namespace TESTSOLAPAS
 
             _inner.AsignarProfesional(turnoId, profesionalId);
         }
-
-        public int CrearOrdenConTurnos(NuevaOrdenTurnos datos, IReadOnlyList<TurnoGenerado> turnos) =>
-            _inner.CrearOrdenConTurnos(datos, turnos);
     }
 }
