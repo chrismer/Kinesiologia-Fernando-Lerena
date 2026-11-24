@@ -12,3 +12,6 @@ obj/
 
 # Credenciales y configuración local
 appsettings.json
+
+# Enunciado local, no va al repositorio
+kinesiologia-fernando-lerena.pdf
